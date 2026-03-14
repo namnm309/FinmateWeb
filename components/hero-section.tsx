@@ -7,18 +7,18 @@ export function HeroSection() {
   return (
     <section
       className="flex flex-col items-center relative rounded-none overflow-hidden mt-0 mb-6 py-0
-        w-full md:w-screen md:left-1/2 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] min-h-[560px] md:min-h-[600px] lg:min-h-[720px]"
+        w-full md:w-screen md:left-1/2 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] min-h-screen min-h-[100svh]"
     >
       {/* SVG Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-x-0 bottom-0 z-0 h-[112%] md:h-[115%] lg:h-[120%]">
         <svg
-          className="max-h-screen object-cover"
+          className="h-full w-full object-cover"
           width="100%"
           height="100%"
           viewBox="0 0 1220 810"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMid slice"
+          preserveAspectRatio="xMidYMax slice"
         >
           <g clipPath="url(#clip0_186_1134)">
             <mask
@@ -439,25 +439,25 @@ export function HeroSection() {
       </div>
 
       {/* 2-column layout: left text, right phone */}
-      <div className="relative z-10 w-full max-w-[1320px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 px-4 sm:px-6 md:px-12 lg:px-16 mt-20 md:mt-[120px] lg:mt-[140px] pb-8">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto min-h-[100svh] flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-12 px-4 sm:px-6 md:px-12 lg:px-20 pt-24 md:pt-28 lg:pt-32 pb-10 md:pb-12">
         {/* Left: Text content */}
-        <div className="flex flex-col items-start text-left space-y-5 max-w-md lg:max-w-[520px] flex-shrink-0">
-          <h1 className="text-foreground text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-balance">
+        <div className="flex flex-col items-start text-left space-y-6 max-w-xl lg:max-w-[620px] flex-shrink-0">
+          <h1 className="text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-balance">
             Quản lý tài chính thông minh cùng AI
           </h1>
-          <p className="text-muted-foreground text-base lg:text-lg font-medium leading-relaxed">
+          <p className="text-muted-foreground text-base sm:text-lg lg:text-xl font-medium leading-relaxed">
             FinMate giúp bạn theo dõi chi tiêu, đặt mục tiêu tiết kiệm và nhập liệu tự động bằng AI — chỉ cần nói một câu, mọi việc đã xong.
           </p>
 
           {/* Feature list */}
-          <ul className="space-y-3 text-sm lg:text-base">
+          <ul className="space-y-4 text-sm sm:text-base lg:text-lg">
             {[
               { title: "AI nhập liệu tự động", desc: "Chỉ cần nhập \"Hôm nay đi chợ hết 100k\", AI sẽ tự phân loại." },
               { title: "Theo dõi mục tiêu tiết kiệm", desc: "Biết chính xác cần tiết kiệm bao nhiêu mỗi ngày để đạt mục tiêu." },
               { title: "Gợi ý tài chính hàng ngày", desc: "Nhận lời khuyên chi tiêu phù hợp với thói quen của bạn." },
             ].map((f) => (
-              <li key={f.title} className="flex items-start gap-3">
-                <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+              <li key={f.title} className="flex items-start gap-3.5">
+                <span className="mt-1 flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary/20 flex items-center justify-center">
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
                     <path d="M1 4L3.5 6.5L9 1" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -471,21 +471,43 @@ export function HeroSection() {
           </ul>
 
           <Link href="#" target="_blank" rel="noopener noreferrer">
-            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-8 py-3 rounded-full font-medium text-base shadow-lg ring-1 ring-white/10 mt-2">
+            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-10 py-4 rounded-full font-medium text-base sm:text-lg shadow-lg ring-1 ring-white/10 mt-3 h-12 sm:h-14">
               Dùng thử miễn phí
             </Button>
           </Link>
         </div>
 
-        {/* Right: Phone mockup */}
-        <div className="flex-shrink-0 flex items-end justify-center">
-          <div className="relative w-[180px] sm:w-[220px] md:w-[260px] lg:w-[300px]">
-            <div className="bg-primary-light/20 rounded-[3rem] p-[6px] shadow-2xl ring-1 ring-primary/20">
-              <img
-                src="/images/finmate-preview.png"
-                alt="Ảnh chụp ứng dụng FinMate"
-                className="w-full h-auto rounded-[2.5rem] shadow-lg object-cover"
-              />
+        {/* Right: 3-phone mockup */}
+        <div className="flex-shrink-0 flex items-end justify-center w-full md:w-auto mt-6 md:mt-20 lg:mt-40 md:translate-x-20 lg:translate-x-32">
+          <div className="relative w-[230px] sm:w-[280px] md:w-[620px] lg:w-[780px] h-[420px] md:h-[620px]">
+            <div className="hidden md:block absolute left-2 lg:left-8 bottom-5 lg:bottom-8 w-[250px] lg:w-[320px] opacity-85 z-10">
+              <div className="bg-primary-light/15 rounded-[2.3rem] p-[5px] shadow-2xl ring-1 ring-primary/15">
+                <img
+                  src="/images/1.png"
+                  alt="Ảnh chụp ứng dụng FinMate màn 1"
+                  className="w-full h-auto rounded-[2rem] shadow-lg object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[230px] sm:w-[280px] md:w-[320px] lg:w-[380px] z-30">
+              <div className="bg-primary-light/20 rounded-[3rem] p-[6px] shadow-2xl ring-1 ring-primary/20">
+                <img
+                  src="/images/2.png"
+                  alt="Ảnh chụp ứng dụng FinMate màn 2"
+                  className="w-full h-auto rounded-[2.5rem] shadow-lg object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="hidden md:block absolute right-2 lg:right-8 bottom-5 lg:bottom-8 w-[250px] lg:w-[320px] opacity-85 z-10">
+              <div className="bg-primary-light/15 rounded-[2.3rem] p-[5px] shadow-2xl ring-1 ring-primary/15">
+                <img
+                  src="/images/3.png"
+                  alt="Ảnh chụp ứng dụng FinMate màn 3"
+                  className="w-full h-auto rounded-[2rem] shadow-lg object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>

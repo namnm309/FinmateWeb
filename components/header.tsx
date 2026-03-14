@@ -12,7 +12,7 @@ export function Header() {
   const navItems = [
     { name: "Tính năng", href: "#features-section" },
     { name: "Gói cước", href: "#pricing-section" },
-    { name: "Người dùng nói gì", href: "#testimonials-section" },
+    { name: "Đánh giá", href: "#testimonials-section" },
   ]
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -25,26 +25,26 @@ export function Header() {
   }
 
   return (
-    <header className="w-full py-4 px-4 sm:px-6">
+    <header className="w-full py-5 md:py-6 px-4 sm:px-6 md:px-8">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <div className="flex items-center gap-7 md:gap-8">
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
             <Image 
               src="/finmate-logo.png" 
               alt="Logo FinMate" 
-              width={32} 
-              height={32}
-              className="w-8 h-8"
+              width={40} 
+              height={40}
+              className="w-9 h-9 md:w-10 md:h-10"
             />
-            <span className="text-foreground text-xl font-semibold hidden sm:inline">FinMate</span>
+            <span className="text-foreground text-2xl md:text-[28px] font-semibold hidden sm:inline">FinMate</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-2">
+          <nav className="hidden md:flex items-center gap-3">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleScroll(e, item.href)} // Add onClick handler
-                className="text-[#888888] hover:text-foreground px-4 py-2 rounded-full font-medium transition-colors"
+                className="text-[#888888] hover:text-foreground px-5 py-2.5 rounded-full text-base lg:text-lg font-medium transition-colors"
               >
                 {item.name}
               </Link>
@@ -53,14 +53,14 @@ export function Header() {
         </div>
         <div className="flex items-center gap-4">
           <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="hidden md:block">
-            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-2 rounded-full font-medium shadow-sm">
+            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-8 h-12 rounded-full text-base lg:text-lg font-medium shadow-sm">
               Dùng thử miễn phí
             </Button>
           </Link>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-foreground h-10 w-10">
-                <Menu className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="text-foreground h-11 w-11">
+                <Menu className="h-7 w-7" />
                 <span className="sr-only">Mở menu điều hướng</span>
               </Button>
             </SheetTrigger>
