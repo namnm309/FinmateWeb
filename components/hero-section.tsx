@@ -7,7 +7,7 @@ export function HeroSection() {
   return (
     <section
       className="flex flex-col items-center relative rounded-none overflow-hidden mt-0 mb-6 py-0
-        w-full md:w-screen md:left-1/2 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] min-h-screen min-h-[100svh]"
+        w-full md:left-1/2 md:w-screen md:-translate-x-1/2 min-h-screen min-h-[100svh]"
     >
       {/* SVG Background */}
       <div className="absolute inset-x-0 bottom-0 z-0 h-[112%] md:h-[115%] lg:h-[120%]">
@@ -478,7 +478,7 @@ export function HeroSection() {
         </div>
 
         {/* Right: 3-phone mockup */}
-        <div className="flex-shrink-0 flex items-end justify-center w-full md:w-auto mt-6 md:mt-20 lg:mt-40 md:translate-x-20 lg:translate-x-32">
+        <div className="flex-shrink-0 flex items-end justify-center w-full md:w-auto mt-6 md:mt-20 lg:mt-40">
           <div className="relative w-[230px] sm:w-[280px] md:w-[620px] lg:w-[780px] h-[420px] md:h-[620px]">
             <div className="hidden md:block absolute left-2 lg:left-8 bottom-5 lg:bottom-8 w-[250px] lg:w-[320px] opacity-85 z-10">
               <div className="bg-primary-light/15 rounded-[2.3rem] p-[5px] shadow-2xl ring-1 ring-primary/15">
