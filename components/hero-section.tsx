@@ -7,11 +7,12 @@ export function HeroSection() {
   return (
     <section
       className="flex flex-col items-center relative rounded-none overflow-hidden mt-0 mb-6 py-0
-        w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] h-auto md:min-h-[600px] lg:min-h-[720px]"
+        w-full md:w-screen md:left-1/2 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] min-h-[560px] md:min-h-[600px] lg:min-h-[720px]"
     >
       {/* SVG Background */}
       <div className="absolute inset-0 z-0">
         <svg
+          className="max-h-screen object-cover"
           width="100%"
           height="100%"
           viewBox="0 0 1220 810"
@@ -438,10 +439,10 @@ export function HeroSection() {
       </div>
 
       {/* 2-column layout: left text, right phone */}
-      <div className="relative z-10 w-full max-w-[1320px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 px-8 md:px-12 lg:px-16 mt-20 md:mt-[120px] lg:mt-[140px] pb-8">
+      <div className="relative z-10 w-full max-w-[1320px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 px-4 sm:px-6 md:px-12 lg:px-16 mt-20 md:mt-[120px] lg:mt-[140px] pb-8">
         {/* Left: Text content */}
         <div className="flex flex-col items-start text-left space-y-5 max-w-md lg:max-w-[520px] flex-shrink-0">
-          <h1 className="text-foreground text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-balance">
+          <h1 className="text-foreground text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-balance">
             Quản lý tài chính thông minh cùng AI
           </h1>
           <p className="text-muted-foreground text-base lg:text-lg font-medium leading-relaxed">
@@ -478,7 +479,7 @@ export function HeroSection() {
 
         {/* Right: Phone mockup */}
         <div className="flex-shrink-0 flex items-end justify-center">
-          <div className="relative w-[240px] md:w-[260px] lg:w-[300px]">
+          <div className="relative w-[180px] sm:w-[220px] md:w-[260px] lg:w-[300px]">
             <div className="bg-primary-light/20 rounded-[3rem] p-[6px] shadow-2xl ring-1 ring-primary/20">
               <img
                 src="/images/finmate-preview.png"

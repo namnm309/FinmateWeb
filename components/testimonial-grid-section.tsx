@@ -150,7 +150,7 @@ const TestimonialCard = ({ quote, name, date, avatar, type, title }: {
 
 export function TestimonialGridSection() {
   return (
-    <section className="w-full px-5 overflow-hidden flex flex-col justify-start py-6 md:py-8 lg:py-14">
+    <section className="w-full px-4 sm:px-5 overflow-hidden flex flex-col justify-start py-6 md:py-8 lg:py-14">
       <div className="self-stretch py-6 md:py-8 lg:py-14 flex flex-col justify-center items-center gap-4">
         {/* Stars and review count */}
         <div className="flex flex-col items-center gap-2">
@@ -166,17 +166,17 @@ export function TestimonialGridSection() {
           </p>
         </div>
       </div>
-      <div className="w-full pt-0.5 pb-4 md:pb-6 lg:pb-10 flex flex-col md:flex-row justify-center items-start gap-4 md:gap-4 lg:gap-6 max-w-[1100px] mx-auto">
-        <div className="flex-1 flex flex-col justify-start items-start gap-4 md:gap-4 lg:gap-6">
+      <div className="w-full pt-0.5 pb-4 md:pb-6 lg:pb-10 flex flex-col md:flex-row justify-center items-start gap-2 sm:gap-3 md:gap-4 lg:gap-6 max-w-[1100px] mx-auto">
+        <div className="w-full md:flex-1 flex flex-col justify-start items-start gap-4 md:gap-4 lg:gap-6">
           <TestimonialCard {...testimonials[0]} />
           <TestimonialCard {...testimonials[1]} />
         </div>
-        <div className="flex-1 flex flex-col justify-start items-start gap-4 md:gap-4 lg:gap-6">
+        <div className="w-full md:flex-1 flex flex-col justify-start items-start gap-4 md:gap-4 lg:gap-6">
           <TestimonialCard {...testimonials[2]} />
           <TestimonialCard {...testimonials[3]} />
           <TestimonialCard {...testimonials[4]} />
         </div>
-        <div className="flex-1 flex flex-col justify-start items-start gap-4 md:gap-4 lg:gap-6">
+        <div className="w-full md:flex-1 flex flex-col justify-start items-start gap-4 md:gap-4 lg:gap-6">
           <TestimonialCard {...testimonials[5]} />
           <TestimonialCard {...testimonials[6]} />
         </div>

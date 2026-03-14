@@ -97,7 +97,7 @@ export function FeaturesSection() {
   }, [activeFeature.image])
 
   return (
-    <section className="py-16 md:py-24 px-6">
+    <section className="py-16 md:py-24 px-4 sm:px-6">
       {/* Header */}
       <div className="text-center mb-12 md:mb-16 space-y-3">
         <h2 className="text-foreground text-4xl md:text-5xl font-bold">Tính năng</h2>
@@ -107,7 +107,7 @@ export function FeaturesSection() {
       </div>
 
       {/* 3-column layout */}
-      <div className="flex flex-col md:flex-row items-start justify-center gap-8 lg:gap-12">
+      <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 lg:gap-12">
 
         {/* Left features */}
         <div className="flex flex-col gap-6 w-full md:w-[260px] lg:w-[300px] md:pt-8">
@@ -124,7 +124,7 @@ export function FeaturesSection() {
 
         {/* Center phone mockup */}
         <div className="flex-shrink-0 flex items-center justify-center w-full md:w-auto">
-          <div className="relative w-[220px] md:w-[240px] lg:w-[280px]">
+          <div className="relative w-[180px] sm:w-[200px] md:w-[240px] lg:w-[280px]">
             {/* Phone frame */}
             <div className="relative bg-foreground rounded-[3rem] p-[10px] shadow-2xl ring-4 ring-foreground/10">
               <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-foreground rounded-full z-10" />
@@ -181,6 +181,7 @@ function FeatureItem({
         align === "right" ? "flex-row-reverse text-right" : "flex-row text-left"
       )}
       onMouseEnter={onHover}
+      onClick={onHover}
     >
       {/* Icon */}
       <div

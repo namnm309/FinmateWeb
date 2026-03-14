@@ -25,7 +25,7 @@ export function Header() {
   }
 
   return (
-    <header className="w-full py-4 px-6">
+    <header className="w-full py-4 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
@@ -59,8 +59,8 @@ export function Header() {
           </Link>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-foreground">
-                <Menu className="h-7 w-7" />
+              <Button variant="ghost" size="icon" className="text-foreground h-10 w-10">
+                <Menu className="h-6 w-6" />
                 <span className="sr-only">Mở menu điều hướng</span>
               </Button>
             </SheetTrigger>
@@ -74,7 +74,7 @@ export function Header() {
                     key={item.name}
                     href={item.href}
                     onClick={(e) => handleScroll(e, item.href)} // Add onClick handler
-                    className="text-[#888888] hover:text-foreground justify-start text-lg py-2"
+                    className="text-[#888888] hover:text-foreground justify-start text-lg py-3"
                   >
                     {item.name}
                   </Link>

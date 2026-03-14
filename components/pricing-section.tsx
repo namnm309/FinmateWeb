@@ -63,10 +63,10 @@ export function PricingSection() {
   const [hoveredPlanIndex, setHoveredPlanIndex] = useState<number | null>(null)
 
   return (
-    <section className="w-full px-5 overflow-hidden flex flex-col justify-start items-center my-0 py-8 md:py-14">
+    <section className="w-full px-4 sm:px-5 overflow-hidden flex flex-col justify-start items-center my-0 py-8 md:py-14">
       <div className="self-stretch relative flex flex-col justify-center items-center gap-2 py-0">
         <div className="flex flex-col justify-start items-center gap-4">
-          <h2 className="text-center text-foreground text-4xl md:text-5xl font-semibold leading-tight md:leading-[40px]">
+          <h2 className="text-center text-foreground text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight md:leading-[40px]">
             Nâng cấp tài khoản
           </h2>
           <p className="self-stretch text-center text-muted-foreground text-sm font-medium leading-tight">
@@ -74,7 +74,7 @@ export function PricingSection() {
           </p>
         </div>
       </div>
-      <div className="self-stretch px-5 flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-6 mt-6 max-w-[1100px] mx-auto">
+      <div className="self-stretch px-0 sm:px-5 flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-6 mt-6 max-w-[1100px] mx-auto">
         {pricingPlans.map((plan, index) => {
           const isSelected = selectedPlanIndex === index
           const isHighlighted = hoveredPlanIndex !== null ? hoveredPlanIndex === index : isSelected
@@ -84,7 +84,7 @@ export function PricingSection() {
             key={index}
             onMouseEnter={() => setHoveredPlanIndex(index)}
             onMouseLeave={() => setHoveredPlanIndex(null)}
-            className={`flex-1 p-5 overflow-hidden rounded-xl flex flex-col justify-between gap-6 cursor-pointer transition-all duration-200 ${
+            className={`flex-1 p-4 sm:p-5 overflow-hidden rounded-xl flex flex-col justify-between gap-6 cursor-pointer transition-all duration-200 ${
               isHighlighted
                 ? "bg-primary shadow-[0px_10px_24px_-8px_rgba(0,0,0,0.20)]"
                 : "bg-card hover:-translate-y-1 hover:shadow-[0px_8px_20px_-10px_rgba(0,0,0,0.18)]"
@@ -119,7 +119,7 @@ export function PricingSection() {
 
               {/* Price */}
               <div className="flex items-baseline gap-2">
-                <span className={`text-3xl font-bold ${isHighlighted ? "text-primary-foreground" : "text-foreground"}`}>
+                <span className={`text-2xl sm:text-3xl font-bold ${isHighlighted ? "text-primary-foreground" : "text-foreground"}`}>
                   {plan.price} đ
                 </span>
                 {plan.originalPrice && (
