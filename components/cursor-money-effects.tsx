@@ -264,6 +264,8 @@ function MoneyBill({
   compact?: boolean
   cursor?: boolean
 }) {
+  const hasCurrencyMark = /[đ₫]/i.test(label)
+
   return (
     <div
       className={`relative overflow-hidden rounded-md border border-emerald-200/45 bg-[linear-gradient(135deg,rgba(170,255,222,0.95),rgba(110,255,200,0.9)_48%,rgba(46,196,141,0.95))] ${cursor ? "shadow-[0_14px_30px_rgba(70,255,180,0.22)]" : "shadow-[0_12px_30px_rgba(70,255,180,0.16)]"}`}
@@ -273,8 +275,12 @@ function MoneyBill({
       <div className="absolute inset-y-0 right-[18%] w-px bg-emerald-950/15" />
       <div className="absolute inset-x-[12%] top-[18%] h-[2px] rounded-full bg-emerald-950/10" />
       <div className="absolute inset-0 bg-[linear-gradient(115deg,transparent_25%,rgba(255,255,255,0.42)_48%,transparent_72%)] opacity-80" />
-      <div className="absolute left-[10%] top-1/2 -translate-y-1/2 text-[10px] font-black leading-none text-emerald-950/70">₫</div>
-      <div className="absolute right-[10%] top-1/2 -translate-y-1/2 text-[10px] font-black leading-none text-emerald-950/70">₫</div>
+      {!hasCurrencyMark && (
+        <>
+          <div className="absolute left-[10%] top-1/2 -translate-y-1/2 text-[10px] font-black leading-none text-emerald-950/70">₫</div>
+          <div className="absolute right-[10%] top-1/2 -translate-y-1/2 text-[10px] font-black leading-none text-emerald-950/70">₫</div>
+        </>
+      )}
       <div className={`flex h-full items-center justify-center font-black text-emerald-950/90 ${compact ? "text-[9px] tracking-[0.16em]" : "text-[10px] tracking-[0.24em]"}`}>
         {label}
       </div>
