@@ -7,15 +7,17 @@ import { FAQSection } from "@/components/faq-section"
 import { CTASection } from "@/components/cta-section"
 import { FooterSection } from "@/components/footer-section"
 import { AnimatedSection } from "@/components/animated-section"
+import { CursorMoneyEffects } from "@/components/cursor-money-effects"
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden pb-0">
+      <CursorMoneyEffects />
       <div className="relative z-10">
         <main className="max-w-[1320px] mx-auto relative">
           <HeroSection />
         </main>
-        <AnimatedSection className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-12" delay={0.1}>
+        <AnimatedSection id="features-section" className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-12" delay={0.1}>
           <FeaturesSection />
         </AnimatedSection>
         <AnimatedSection

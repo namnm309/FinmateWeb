@@ -50,3 +50,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (pointer: fine) {
+  body.money-cursor-active,
+  body.money-cursor-active * {
+    cursor: none !important;
+  }
+}

@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { Star } from "lucide-react"
 
 const testimonials = [
@@ -75,71 +74,57 @@ const StarRating = ({ className = "" }: { className?: string }) => (
   </div>
 )
 
-const TestimonialCard = ({ quote, name, date, avatar, type, title }: {
+const TestimonialCard = ({ quote, name, date, type, title }: {
   quote: string
   name: string
   date: string
-  avatar: string
   type: string
   title: string
 }) => {
   const isLargeCard = type.startsWith("large")
   const padding = isLargeCard ? "p-6" : "p-5"
 
-  let cardClasses = `flex flex-col justify-between items-start overflow-hidden rounded-xl shadow-[0px_2px_8px_rgba(0,0,0,0.06)] relative ${padding}`
-  let titleClasses = ""
-  let quoteClasses = ""
-  let nameClasses = ""
-  let dateClasses = ""
+  let cardClasses = `group relative flex flex-col justify-between items-start overflow-hidden rounded-xl border border-border bg-card ${padding} shadow-[0px_2px_8px_rgba(0,0,0,0.06)] transition-all duration-200 hover:border-primary hover:shadow-[0px_10px_24px_-8px_rgba(0,0,0,0.20)]`
+  let titleClasses = "text-foreground transition-colors duration-200 group-hover:text-primary-foreground"
+  let quoteClasses = "transition-colors duration-200 group-hover:text-primary-foreground/90"
+  let nameClasses = "text-foreground transition-colors duration-200 group-hover:text-primary-foreground"
+  let dateClasses = "text-muted-foreground transition-colors duration-200 group-hover:text-primary-foreground/60"
   let backgroundElements = null
-  let cardHeight = ""
+  let hoverOverlay = null
+  let cardHeight = isLargeCard ? "h-auto min-h-[320px]" : "h-auto min-h-[200px]"
   const cardWidth = "w-full md:w-[384px]"
 
-  if (type === "large-teal") {
-    cardClasses += " bg-primary"
-    titleClasses += " text-primary-foreground text-lg font-semibold"
-    quoteClasses += " text-primary-foreground/90 text-base font-normal leading-relaxed"
-    nameClasses += " text-primary-foreground text-sm font-medium"
-    dateClasses += " text-primary-foreground/60 text-xs"
-    cardHeight = "h-auto min-h-[320px]"
+  if (isLargeCard) {
+    titleClasses += " text-lg font-semibold"
+    quoteClasses += " text-base font-normal leading-relaxed text-foreground/80"
+    nameClasses += " text-sm font-medium"
+    dateClasses += " text-xs"
     backgroundElements = (
       <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/large-card-background.svg')", zIndex: 0 }}
-      />
-    )
-  } else if (type === "large-light") {
-    cardClasses += " bg-card border border-border"
-    titleClasses += " text-foreground text-lg font-semibold"
-    quoteClasses += " text-foreground/80 text-base font-normal leading-relaxed"
-    nameClasses += " text-foreground text-sm font-medium"
-    dateClasses += " text-muted-foreground text-xs"
-    cardHeight = "h-auto min-h-[320px]"
-    backgroundElements = (
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-5"
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-5 transition-opacity duration-200 group-hover:opacity-10"
         style={{ backgroundImage: "url('/images/large-card-background.svg')", zIndex: 0 }}
       />
     )
   } else {
-    cardClasses += " bg-card border border-border"
-    titleClasses += " text-foreground text-base font-semibold"
-    quoteClasses += " text-foreground/70 text-sm font-normal leading-relaxed"
-    nameClasses += " text-foreground text-sm font-medium"
-    dateClasses += " text-muted-foreground text-xs"
-    cardHeight = "h-auto min-h-[200px]"
+    titleClasses += " text-base font-semibold"
+    quoteClasses += " text-sm font-normal leading-relaxed text-foreground/70"
+    nameClasses += " text-sm font-medium"
+    dateClasses += " text-xs"
   }
+
+  hoverOverlay = <div className="absolute inset-0 bg-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100" style={{ zIndex: 0 }} />
 
   return (
     <div className={`${cardClasses} ${cardWidth} ${cardHeight} gap-4`}>
       {backgroundElements}
+      {hoverOverlay}
       {/* Header: Title + Date */}
       <div className="relative z-10 w-full flex justify-between items-start gap-2">
         <h3 className={titleClasses}>{title}</h3>
         <span className={`${dateClasses} whitespace-nowrap`}>{date}</span>
       </div>
       {/* Star Rating */}
-      <StarRating className="relative z-10" />
+      <StarRating className="relative z-10 transition-opacity duration-200 group-hover:brightness-110" />
       {/* Quote */}
       <p className={`relative z-10 flex-1 ${quoteClasses}`}>{quote}</p>
       {/* Author */}
