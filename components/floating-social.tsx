@@ -17,7 +17,7 @@ export function FloatingSocial() {
   }, [showMessage])
 
   return (
-    <div className="fixed right-2 sm:right-3 md:right-5 bottom-4 md:bottom-6 z-[60] flex flex-col items-end gap-2 md:gap-3 origin-bottom-right max-[1366px]:scale-90 max-[1200px]:scale-80">
+    <div className="fixed right-2 sm:right-3 md:right-5 bottom-4 md:bottom-6 z-[60] flex flex-col items-end gap-2 md:gap-3 origin-bottom-right scale-[0.8]">
       <div className="w-32 sm:w-36 md:w-40 flex flex-col items-center gap-2 md:gap-3 self-end">
         <a
           href="https://www.tiktok.com/@finmate0?fbclid=IwY2xjawQibxhleHRuA2FlbQIxMABicmlkETFLREY4UUhtaEYxQ2I2TDFsc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHjv9sEEIRsqM_X66rSF4cvQOpb2imA_sWb0LpMjTJc-6Qs6ZUaVOWAWEcD0c_aem_eNbq1SaY3jkNlyfE5yhljw"

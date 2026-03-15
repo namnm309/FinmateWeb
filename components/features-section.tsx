@@ -35,7 +35,7 @@ const leftFeatures: Feature[] = [
     icon: <BarChart2 className="w-6 h-6" />,
     title: "Báo cáo trực quan, sinh động",
     description: "Thống kê rõ ràng, thông minh mọi khoản thu/chi của bạn",
-    image: "/images/report-preview.png",
+    image: "/images/report-preview2.png",
   },
   {
     id: "debt",
