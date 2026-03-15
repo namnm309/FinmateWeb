@@ -3,16 +3,21 @@
 import { useEffect, useState } from "react"
 
 export function FloatingSocial() {
-  const [showMessage, setShowMessage] = useState(true)
+  const [showMessage, setShowMessage] = useState(false)
   const [entered, setEntered] = useState(false)
 
   useEffect(() => {
+    if (!showMessage) {
+      setEntered(false)
+      return
+    }
+
     const timerId = window.setTimeout(() => setEntered(true), 80)
     return () => window.clearTimeout(timerId)
-  }, [])
+  }, [showMessage])
 
   return (
-    <div className="fixed right-4 bottom-5 md:right-6 md:bottom-7 z-[60] flex flex-col items-end gap-3">
+    <div className="fixed right-10 bottom-5 md:right-12 md:bottom-7 z-[60] flex flex-col items-end gap-3">
       <div className="w-40 md:w-44 flex flex-col items-center gap-3 self-end">
         <a
           href="https://www.tiktok.com/@finmate0?fbclid=IwY2xjawQibxhleHRuA2FlbQIxMABicmlkETFLREY4UUhtaEYxQ2I2TDFsc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHjv9sEEIRsqM_X66rSF4cvQOpb2imA_sWb0LpMjTJc-6Qs6ZUaVOWAWEcD0c_aem_eNbq1SaY3jkNlyfE5yhljw"
