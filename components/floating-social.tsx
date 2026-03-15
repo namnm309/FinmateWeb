@@ -17,8 +17,8 @@ export function FloatingSocial() {
   }, [showMessage])
 
   return (
-    <div className="fixed right-6 bottom-5 md:right-8 md:bottom-7 z-[60] flex flex-col items-end gap-3">
-      <div className="w-40 md:w-44 flex flex-col items-center gap-3 self-end">
+    <div className="fixed right-2 sm:right-3 md:right-5 bottom-4 md:bottom-6 z-[60] flex flex-col items-end gap-2 md:gap-3 origin-bottom-right max-[1366px]:scale-90 max-[1200px]:scale-80">
+      <div className="w-32 sm:w-36 md:w-40 flex flex-col items-center gap-2 md:gap-3 self-end">
         <a
           href="https://www.tiktok.com/@finmate0?fbclid=IwY2xjawQibxhleHRuA2FlbQIxMABicmlkETFLREY4UUhtaEYxQ2I2TDFsc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHjv9sEEIRsqM_X66rSF4cvQOpb2imA_sWb0LpMjTJc-6Qs6ZUaVOWAWEcD0c_aem_eNbq1SaY3jkNlyfE5yhljw"
           target="_blank"
@@ -43,7 +43,7 @@ export function FloatingSocial() {
         </a>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 md:gap-3">
         {showMessage && (
           <div
             className={`max-w-[220px] text-right text-xs md:text-sm font-semibold text-black floating-message-color-loop drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-all duration-700 ease-out ${
@@ -59,14 +59,14 @@ export function FloatingSocial() {
           type="button"
           aria-label={showMessage ? "Ẩn lời nhắn" : "Hiện lời nhắn"}
           onClick={() => setShowMessage((prev) => !prev)}
-          className="bg-transparent p-0 translate-x-2 md:translate-x-3"
+          className="bg-transparent p-0 translate-x-1 md:translate-x-2"
         >
           <img
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjhhM2J2d2VtcmhubzExcjVsYnd3MXYyaXhlMHI2ZTEwM2N3MHJ6NSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/rZjsvCDqSM7jzH2HHS/giphy.gif"
             alt="FinMate sticker"
             width={170}
             height={170}
-            className="h-40 w-40 md:h-44 md:w-44 object-contain"
+            className="h-28 w-28 sm:h-32 sm:w-32 md:h-36 md:w-36 lg:h-40 lg:w-40 object-contain"
             loading="lazy"
           />
         </button>
