@@ -57,3 +57,16 @@
     cursor: none !important;
   }
 }
+
+@keyframes floatingMessageColorLoop {
+  0% {
+    color: #000000;
+  }
+  100% {
+    color: hsl(var(--primary-dark));
+  }
+}
+
+.floating-message-color-loop {
+  animation: floatingMessageColorLoop 1.5s ease-in-out infinite alternate;
+}
