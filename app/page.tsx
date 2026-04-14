@@ -8,10 +8,15 @@ import { FooterSection } from "@/components/footer-section"
 import { AnimatedSection } from "@/components/animated-section"
 import { CursorMoneyEffects } from "@/components/cursor-money-effects"
 import { FloatingSocial } from "@/components/floating-social"
+import SepayThankYouToast from "@/components/SepayThankYouToast"
+import { Suspense } from "react"
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden pb-0">
+      <Suspense fallback={null}>
+        <SepayThankYouToast />
+      </Suspense>
       <FloatingSocial />
       <CursorMoneyEffects />
       <div className="relative z-10">
