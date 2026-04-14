@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { upsertPremiumPlanConfigs, fetchPremiumPlanConfigs, type PremiumPlanConfig } from "@/lib/premium-plan-configs"
+import { adminUpsertAppDownloadConfig, fetchAppDownloadConfig } from "@/lib/app-download-config"
 
 type EditablePlan = {
   plan: PremiumPlanConfig["plan"]
@@ -65,6 +66,13 @@ export default function DashboardPricingPage() {
   const [error, setError] = React.useState<string | null>(null)
   const [success, setSuccess] = React.useState<string | null>(null)
 
+  const [downloadIosUrl, setDownloadIosUrl] = React.useState<string>("")
+  const [downloadAndroidUrl, setDownloadAndroidUrl] = React.useState<string>("")
+  const [downloadSaving, setDownloadSaving] = React.useState(false)
+  const [downloadLoading, setDownloadLoading] = React.useState(true)
+  const [downloadError, setDownloadError] = React.useState<string | null>(null)
+  const [downloadSuccess, setDownloadSuccess] = React.useState<string | null>(null)
+
   React.useEffect(() => {
     let mounted = true
     setLoading(true)
@@ -82,6 +90,29 @@ export default function DashboardPricingPage() {
       .finally(() => {
         if (!mounted) return
         setLoading(false)
+      })
+    return () => {
+      mounted = false
+    }
+  }, [])
+
+  React.useEffect(() => {
+    let mounted = true
+    setDownloadLoading(true)
+    fetchAppDownloadConfig()
+      .then((cfg) => {
+        if (!mounted) return
+        setDownloadIosUrl(cfg.iosUrl ?? "")
+        setDownloadAndroidUrl(cfg.androidUrl ?? "")
+        setDownloadError(null)
+      })
+      .catch((e: unknown) => {
+        if (!mounted) return
+        setDownloadError(e instanceof Error ? e.message : String(e))
+      })
+      .finally(() => {
+        if (!mounted) return
+        setDownloadLoading(false)
       })
     return () => {
       mounted = false
@@ -119,6 +150,30 @@ export default function DashboardPricingPage() {
       setError(e instanceof Error ? e.message : String(e))
     } finally {
       setSaving(false)
+    }
+  }
+
+  const onSaveDownloadLinks = async () => {
+    setDownloadSuccess(null)
+    setDownloadError(null)
+    setDownloadSaving(true)
+    try {
+      const token = await getToken()
+      if (!token) throw new Error("Không lấy được token. Hãy đăng nhập lại.")
+
+      const updated = await adminUpsertAppDownloadConfig({
+        token,
+        iosUrl: downloadIosUrl,
+        androidUrl: downloadAndroidUrl,
+      })
+
+      setDownloadIosUrl(updated.iosUrl ?? "")
+      setDownloadAndroidUrl(updated.androidUrl ?? "")
+      setDownloadSuccess("Đã lưu link tải xuống.")
+    } catch (e: unknown) {
+      setDownloadError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setDownloadSaving(false)
     }
   }
 
@@ -234,6 +289,49 @@ export default function DashboardPricingPage() {
 
           {error ? <div className="text-sm text-destructive">{error}</div> : null}
           {success ? <div className="text-sm text-primary">{success}</div> : null}
+        </CardContent>
+      </Card>
+
+      <Card className="bg-card/40">
+        <CardHeader>
+          <CardTitle className="text-sm font-medium">App download links (Landing)</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {downloadLoading ? <div className="text-sm text-muted-foreground">Đang tải...</div> : null}
+
+          <div className="grid gap-4 md:grid-cols-12">
+            <div className="md:col-span-6 space-y-2">
+              <Label htmlFor="download-ios">iOS URL</Label>
+              <Input
+                id="download-ios"
+                inputMode="url"
+                value={downloadIosUrl}
+                onChange={(e) => setDownloadIosUrl(e.target.value)}
+                placeholder="Ví dụ: https://apps.apple.com/app/..."
+              />
+              <div className="text-xs text-muted-foreground">Để trống nếu muốn ẩn nút iOS.</div>
+            </div>
+            <div className="md:col-span-6 space-y-2">
+              <Label htmlFor="download-android">Android URL</Label>
+              <Input
+                id="download-android"
+                inputMode="url"
+                value={downloadAndroidUrl}
+                onChange={(e) => setDownloadAndroidUrl(e.target.value)}
+                placeholder="Ví dụ: https://play.google.com/store/apps/..."
+              />
+              <div className="text-xs text-muted-foreground">Để trống nếu muốn ẩn nút Android.</div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-3">
+            <Button onClick={onSaveDownloadLinks} disabled={downloadSaving}>
+              {downloadSaving ? "Đang lưu..." : "Lưu link tải xuống"}
+            </Button>
+          </div>
+
+          {downloadError ? <div className="text-sm text-destructive">{downloadError}</div> : null}
+          {downloadSuccess ? <div className="text-sm text-primary">{downloadSuccess}</div> : null}
         </CardContent>
       </Card>
     </div>

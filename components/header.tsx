@@ -81,7 +81,7 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
           ) : null}
           <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="hidden md:block">
             <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-8 h-12 rounded-full text-base lg:text-lg font-medium shadow-sm">
-              Dùng thử miễn phí
+              Tải xuống
             </Button>
           </Link>
           <Sheet>
@@ -108,7 +108,7 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
                 ))}
                 <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="w-full mt-4">
                   <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-2 rounded-full font-medium shadow-sm">
-                    Dùng thử miễn phí
+                    Tải xuống
                   </Button>
                 </Link>
               </nav>

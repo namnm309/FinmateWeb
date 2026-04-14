@@ -486,9 +486,9 @@ export async function HeroSection() {
             ))}
           </ul>
 
-          <Link href="#" target="_blank" rel="noopener noreferrer">
+          <Link href="#pricing-section">
             <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-10 py-4 rounded-full font-medium text-base sm:text-lg shadow-lg ring-1 ring-white/10 mt-3 h-12 sm:h-14">
-              Dùng thử miễn phí
+              Tải xuống
             </Button>
           </Link>
         </div>
