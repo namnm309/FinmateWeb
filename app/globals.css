@@ -39,6 +39,51 @@
     --ring: 165 96% 71%;
 
     --radius: 0.5rem;
+
+    /* Chart palette (used by recharts widgets) */
+    --chart-1: 12 76% 61%;
+    --chart-2: 165 96% 71%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 280 65% 60%;
+
+    /* Sidebar tokens (used by `components/ui/sidebar.tsx`) */
+    --sidebar-background: 210 11% 7%;
+    --sidebar-foreground: 160 14% 93%;
+    --sidebar-primary: 165 96% 71%;
+    --sidebar-primary-foreground: 160 8% 6%;
+    --sidebar-accent: 240 2% 16%;
+    --sidebar-accent-foreground: 160 14% 93%;
+    --sidebar-border: 240 100% 100% / 0.08;
+    --sidebar-ring: 165 96% 71%;
+  }
+}
+
+@layer base {
+  /*
+    Finmate (light) theme scope for `/dashboard`.
+    We keep global site theme intact and only override semantic tokens
+    inside the dashboard shell wrapper.
+  */
+  .finmate {
+    --background: 220 20% 97%; /* ~ #f4f5f7 */
+    --foreground: 0 0% 10%; /* ~ #191919 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%; /* ~ gray */
+
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 10%;
+
+    --border: 0 0% 91%; /* ~ #e8e8e8 */
+    --input: 0 0% 91%;
+    --ring: 174 58% 39%; /* ~ #299D91 */
   }
 }
 

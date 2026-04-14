@@ -5,10 +5,17 @@ import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { SignOutButton, useAuth } from "@clerk/nextjs"
 import { Menu } from "lucide-react"
 import Link from "next/link" // Import Link for client-side navigation
 
-export function Header() {
+type HeaderProps = {
+  showDashboardButton?: boolean
+}
+
+export function Header({ showDashboardButton = false }: HeaderProps) {
+  const { isLoaded, isSignedIn } = useAuth()
+
   const navItems = [
     { name: "Tính năng", href: "#features-section" },
     { name: "Gói cước", href: "#pricing-section" },
@@ -52,6 +59,26 @@ export function Header() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
+          {showDashboardButton ? (
+            <Link href="/dashboard" className="hidden md:block">
+              <Button
+                variant="outline"
+                className="px-7 h-12 rounded-full text-base lg:text-lg font-medium shadow-sm"
+              >
+                Vào dashboard
+              </Button>
+            </Link>
+          ) : null}
+          {isLoaded && isSignedIn ? (
+            <SignOutButton>
+              <Button
+                variant="ghost"
+                className="hidden md:inline-flex px-5 h-12 rounded-full text-base lg:text-lg font-medium"
+              >
+                Đăng xuất
+              </Button>
+            </SignOutButton>
+          ) : null}
           <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="hidden md:block">
             <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-8 h-12 rounded-full text-base lg:text-lg font-medium shadow-sm">
               Dùng thử miễn phí

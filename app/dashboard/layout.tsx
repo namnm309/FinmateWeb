@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 
 import { assertStaffOrAdmin } from '@/lib/be'
+import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 
 export default async function DashboardLayout({
   children,
@@ -21,6 +22,6 @@ export default async function DashboardLayout({
     redirect('/debug-auth')
   }
 
-  return <div className="min-h-svh bg-background">{children}</div>
+  return <DashboardShell>{children}</DashboardShell>
 }
 

@@ -1,66 +1,114 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { fetchPremiumPlanConfigs, type PremiumPlanConfig } from "@/lib/premium-plan-configs"
 
 export function PricingSection() {
-  const pricingPlans = [
-    {
-      name: "Cao cấp",
-      duration: "1 Tháng",
-      price: "79,000",
-      originalPrice: null,
-      discount: null,
-      features: [
-        "Theo dõi ngân sách không giới hạn",
-        "Báo cáo chi tiêu theo tuần và theo tháng",
-        "Đồng bộ trên nhiều thiết bị",
-        "Xuất dữ liệu PDF và Excel",
-      ],
-      buttonText: "Chọn gói này",
-    },
-    {
-      name: "Cao cấp",
-      duration: "6 Tháng",
-      price: "389,000",
-      originalPrice: "474,000",
-      discount: "18",
-      features: [
-        "Tất cả quyền lợi của gói 1 tháng",
-        "Tiết kiệm 18% so với thanh toán từng tháng",
-        "AI gợi ý tối ưu chi tiêu mỗi ngày",
-        "Nhắc nhở hóa đơn và mục tiêu tiết kiệm",
-        "Đồng bộ dữ liệu không giới hạn thiết bị",
-        "Ưu tiên hỗ trợ khi cần",
-      ],
-      buttonText: "Chọn gói này",
-      popular: true,
-    },
-    {
-      name: "Cao cấp",
-      duration: "1 Năm",
-      price: "710,000",
-      originalPrice: "948,000",
-      discount: "25",
-      features: [
-        "Tất cả quyền lợi của gói 6 tháng",
-        "Tiết kiệm 25% với mức phí tối ưu nhất",
-        "Phân tích xu hướng chi tiêu bằng AI",
-        "Lập nhiều quỹ tiết kiệm cùng lúc",
-        "Hỗ trợ ưu tiên 24/7",
-        "Xuất dữ liệu không giới hạn",
-        "Báo cáo tài chính chuyên sâu",
-        "Quản lý nhiều mục tiêu tài chính",
-      ],
-      buttonText: "Chọn gói này",
-    },
-  ]
-
-  const [selectedPlanIndex, setSelectedPlanIndex] = useState(
-    pricingPlans.findIndex((plan) => plan.popular) >= 0 ? pricingPlans.findIndex((plan) => plan.popular) : 0
+  const defaultPlans = useMemo(
+    () => [
+      {
+        key: "1-month" as const,
+        name: "Cao cấp",
+        duration: "1 Tháng",
+        features: [
+          "Theo dõi ngân sách không giới hạn",
+          "Báo cáo chi tiêu theo tuần và theo tháng",
+          "Đồng bộ trên nhiều thiết bị",
+          "Xuất dữ liệu PDF và Excel",
+        ],
+        buttonText: "Chọn gói này",
+      },
+      {
+        key: "6-month" as const,
+        name: "Cao cấp",
+        duration: "6 Tháng",
+        features: [
+          "Tất cả quyền lợi của gói 1 tháng",
+          "Tiết kiệm 18% so với thanh toán từng tháng",
+          "AI gợi ý tối ưu chi tiêu mỗi ngày",
+          "Nhắc nhở hóa đơn và mục tiêu tiết kiệm",
+          "Đồng bộ dữ liệu không giới hạn thiết bị",
+          "Ưu tiên hỗ trợ khi cần",
+        ],
+        buttonText: "Chọn gói này",
+        popular: true,
+      },
+      {
+        key: "1-year" as const,
+        name: "Cao cấp",
+        duration: "1 Năm",
+        features: [
+          "Tất cả quyền lợi của gói 6 tháng",
+          "Tiết kiệm 25% với mức phí tối ưu nhất",
+          "Phân tích xu hướng chi tiêu bằng AI",
+          "Lập nhiều quỹ tiết kiệm cùng lúc",
+          "Hỗ trợ ưu tiên 24/7",
+          "Xuất dữ liệu không giới hạn",
+          "Báo cáo tài chính chuyên sâu",
+          "Quản lý nhiều mục tiêu tài chính",
+        ],
+        buttonText: "Chọn gói này",
+      },
+    ],
+    []
   )
+
+  const [configs, setConfigs] = useState<PremiumPlanConfig[] | null>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let mounted = true
+    fetchPremiumPlanConfigs()
+      .then((data) => {
+        if (!mounted) return
+        setConfigs(data)
+      })
+      .catch((e: unknown) => {
+        if (!mounted) return
+        setLoadError(e instanceof Error ? e.message : String(e))
+        setConfigs(null)
+      })
+    return () => {
+      mounted = false
+    }
+  }, [])
+
+  const formatVnd = useMemo(() => new Intl.NumberFormat("vi-VN"), [])
+
+  const pricingPlans = useMemo(() => {
+    const byKey = new Map(configs?.map((c) => [c.plan, c]) ?? [])
+    return defaultPlans.map((p) => {
+      const c = byKey.get(p.key)
+      const priceVnd = c?.priceVnd ?? (p.key === "1-month" ? 79000 : p.key === "6-month" ? 389000 : 710000)
+      const originalPriceVnd =
+        c?.originalPriceVnd ?? (p.key === "6-month" ? 474000 : p.key === "1-year" ? 948000 : null)
+      const discountPercent =
+        c?.discountPercent ?? (p.key === "6-month" ? 18 : p.key === "1-year" ? 25 : null)
+
+      return {
+        ...p,
+        price: formatVnd.format(priceVnd),
+        originalPrice: originalPriceVnd == null ? null : formatVnd.format(originalPriceVnd),
+        discount: discountPercent == null ? null : String(discountPercent),
+        isActive: c?.isActive ?? true,
+      }
+    })
+  }, [configs, defaultPlans, formatVnd])
+
+  const visiblePlans = useMemo(() => pricingPlans.filter((p) => p.isActive), [pricingPlans])
+  const defaultSelectedIndex = useMemo(() => {
+    const idx = visiblePlans.findIndex((p) => p.popular)
+    return idx >= 0 ? idx : 0
+  }, [visiblePlans])
+
+  const [selectedPlanIndex, setSelectedPlanIndex] = useState(defaultSelectedIndex)
   const [hoveredPlanIndex, setHoveredPlanIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    setSelectedPlanIndex(defaultSelectedIndex)
+  }, [defaultSelectedIndex])
 
   return (
     <section className="w-full px-4 sm:px-5 overflow-hidden flex flex-col justify-start items-center my-0 py-8 md:py-14">
@@ -75,7 +123,7 @@ export function PricingSection() {
         </div>
       </div>
       <div className="self-stretch px-0 sm:px-5 flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-6 mt-6 max-w-[1100px] mx-auto">
-        {pricingPlans.map((plan, index) => {
+        {visiblePlans.map((plan, index) => {
           const isSelected = selectedPlanIndex === index
           const isHighlighted = hoveredPlanIndex !== null ? hoveredPlanIndex === index : isSelected
 
@@ -173,6 +221,11 @@ export function PricingSection() {
           </div>
         )})}
       </div>
+      {loadError ? (
+        <div className="mt-4 text-xs text-muted-foreground">
+          Không tải được giá từ server, đang dùng giá mặc định. ({loadError})
+        </div>
+      ) : null}
     </section>
   )
 }

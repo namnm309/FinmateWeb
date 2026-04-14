@@ -2,8 +2,24 @@ import React from "react"
 import { Button } from "@/components/ui/button"
 import { Header } from "./header"
 import Link from "next/link"
+import { auth } from "@clerk/nextjs/server"
 
-export function HeroSection() {
+import { assertStaffOrAdmin } from "@/lib/be"
+
+export async function HeroSection() {
+  const { getToken } = await auth()
+  const token = await getToken()
+
+  let showDashboardButton = false
+  if (token) {
+    try {
+      await assertStaffOrAdmin(token)
+      showDashboardButton = true
+    } catch {
+      showDashboardButton = false
+    }
+  }
+
   return (
     <section
       className="flex flex-col items-center relative rounded-none overflow-hidden mt-0 mb-6 py-0
@@ -435,7 +451,7 @@ export function HeroSection() {
 
       {/* Header positioned at top of hero container */}
       <div className="absolute top-0 left-0 right-0 z-20">
-        <Header />
+        <Header showDashboardButton={showDashboardButton} />
       </div>
 
       {/* 2-column layout: left text, right phone */}
