@@ -4,8 +4,13 @@ import { useEffect, useMemo, useState } from "react"
 import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { fetchPremiumPlanConfigs, type PremiumPlanConfig } from "@/lib/premium-plan-configs"
+import { initSepayGatewayCheckout } from "@/lib/premium-orders"
+import { useAuth } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 
 export function PricingSection() {
+  const { isLoaded, isSignedIn, getToken } = useAuth()
+  const router = useRouter()
   const defaultPlans = useMemo(
     () => [
       {
@@ -105,10 +110,51 @@ export function PricingSection() {
 
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(defaultSelectedIndex)
   const [hoveredPlanIndex, setHoveredPlanIndex] = useState<number | null>(null)
+  const [creatingIndex, setCreatingIndex] = useState<number | null>(null)
+  const [createError, setCreateError] = useState<string | null>(null)
 
   useEffect(() => {
     setSelectedPlanIndex(defaultSelectedIndex)
   }, [defaultSelectedIndex])
+
+  const startCheckout = async (index: number) => {
+    setCreateError(null)
+    setCreatingIndex(index)
+    try {
+      if (!isLoaded) return
+      if (!isSignedIn) {
+        router.push(`/sign-in`)
+        return
+      }
+
+      const token = await getToken()
+      if (!token) throw new Error("Không lấy được token. Hãy đăng nhập lại.")
+
+      const plan = visiblePlans[index]?.key
+      if (!plan) throw new Error("Gói không hợp lệ.")
+
+      const init = await initSepayGatewayCheckout({ token, plan })
+
+      // Submit a POST form to SePay hosted checkout so QR is rendered on SePay side.
+      const form = document.createElement("form")
+      form.method = "POST"
+      form.action = init.checkoutUrl
+      form.style.display = "none"
+      Object.entries(init.fields).forEach(([k, v]) => {
+        const input = document.createElement("input")
+        input.type = "hidden"
+        input.name = k
+        input.value = v
+        form.appendChild(input)
+      })
+      document.body.appendChild(form)
+      form.submit()
+    } catch (e: unknown) {
+      setCreateError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setCreatingIndex(null)
+    }
+  }
 
   return (
     <section className="w-full px-4 sm:px-5 overflow-hidden flex flex-col justify-start items-center my-0 py-8 md:py-14">
@@ -126,6 +172,7 @@ export function PricingSection() {
         {visiblePlans.map((plan, index) => {
           const isSelected = selectedPlanIndex === index
           const isHighlighted = hoveredPlanIndex !== null ? hoveredPlanIndex === index : isSelected
+          const isCreating = creatingIndex === index
 
           return (
           <div
@@ -209,14 +256,16 @@ export function PricingSection() {
               type="button"
               onClick={() => {
                 setSelectedPlanIndex(index)
+                void startCheckout(index)
               }}
+              disabled={creatingIndex !== null}
               className={`w-full py-3 rounded-full font-medium transition-colors duration-200 ${
                 isHighlighted
                   ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
                   : "bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
               }`}
             >
-              {isSelected ? "Đã chọn gói này" : plan.buttonText}
+              {isCreating ? "Đang tạo đơn..." : isSelected ? "Đã chọn gói này" : plan.buttonText}
             </Button>
           </div>
         )})}
@@ -224,6 +273,11 @@ export function PricingSection() {
       {loadError ? (
         <div className="mt-4 text-xs text-muted-foreground">
           Không tải được giá từ server, đang dùng giá mặc định. ({loadError})
+        </div>
+      ) : null}
+      {createError ? (
+        <div className="mt-3 text-xs text-destructive">
+          {createError}
         </div>
       ) : null}
     </section>

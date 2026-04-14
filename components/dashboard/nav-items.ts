@@ -8,6 +8,7 @@ import {
   ReceiptText,
   PiggyBank,
   Settings,
+  Crown,
 } from 'lucide-react'
 
 export type DashboardNavItem = {
@@ -24,6 +25,7 @@ export const dashboardNav: DashboardNavItem[] = [
   { label: 'Expenses', href: '/dashboard/expenses', icon: ReceiptText },
   { label: 'Goals', href: '/dashboard/goals', icon: PiggyBank },
   { label: 'Pricing', href: '/dashboard/pricing', icon: Tag },
+  { label: 'Premium orders', href: '/dashboard/premium-orders', icon: Crown },
   { label: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
 
