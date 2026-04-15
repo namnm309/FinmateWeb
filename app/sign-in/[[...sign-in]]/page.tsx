@@ -12,6 +12,7 @@ export default function Page() {
         </div>
 
         <SignIn
+          path="/sign-in"
           routing="path"
           appearance={{
             variables: {

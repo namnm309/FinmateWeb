@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
 import { Bell, Search } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -49,7 +50,15 @@ function formatTodayLikeFinmate(date: Date) {
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const { user } = useUser()
   const todayLabel = React.useMemo(() => formatTodayLikeFinmate(new Date()), [])
+
+  const displayName =
+    user?.fullName ||
+    [user?.firstName, user?.lastName].filter(Boolean).join(' ') ||
+    user?.primaryEmailAddress?.emailAddress ||
+    'Admin'
+  const displayEmail = user?.primaryEmailAddress?.emailAddress ?? ''
 
   return (
     <SidebarProvider defaultOpen>
@@ -110,16 +119,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   className="w-full justify-start gap-3 px-2 text-white hover:bg-white/5 hover:text-white"
                 >
                   <Avatar className="size-9">
-                    <AvatarFallback className="text-xs">
-                      {formatInitials('Staff Admin')}
-                    </AvatarFallback>
+                    <AvatarFallback className="text-xs">{formatInitials(displayName)}</AvatarFallback>
                   </Avatar>
                   <div className="min-w-0 flex-1 text-left">
-                    <div className="truncate text-sm font-semibold">
-                      Staff Admin
-                    </div>
+                    <div className="truncate text-sm font-semibold">{displayName}</div>
                     <div className="truncate text-xs text-white/50">
-                      staff@finmate.app
+                      {displayEmail || '—'}
                     </div>
                   </div>
                 </Button>
@@ -143,7 +148,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-[#e8e8e8] bg-[#f4f5f7]/80 px-6 py-5 backdrop-blur supports-[backdrop-filter]:bg-[#f4f5f7]/60">
           <SidebarTrigger className="md:hidden" />
           <div className="flex items-center gap-6">
-            <div className="text-2xl font-bold leading-7">Hello Tanzir</div>
+            <div className="text-2xl font-bold leading-7">Hello {displayName.split(/\s+/)[0] ?? displayName}</div>
             <div className="text-sm text-[#9f9f9f]">{todayLabel}</div>
           </div>
 
