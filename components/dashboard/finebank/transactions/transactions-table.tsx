@@ -8,7 +8,7 @@ import {
   Utensils,
 } from 'lucide-react'
 
-import type { FinebankTransactionRow } from '@/lib/mock/finebank-transactions'
+import type { TxIconName, TransactionTableRow } from '@/lib/transaction-mapper'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Table,
@@ -19,7 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-function Icon({ name }: { name: FinebankTransactionRow['icon'] }) {
+function Icon({ name }: { name: TxIconName }) {
   const cls = 'size-5 text-[#525256]'
   if (name === 'gamepad') return <Gamepad2 className={cls} />
   if (name === 'shirt') return <Shirt className={cls} />
@@ -30,11 +30,7 @@ function Icon({ name }: { name: FinebankTransactionRow['icon'] }) {
   return <Keyboard className={cls} />
 }
 
-export function FinebankTransactionsTable({
-  rows,
-}: {
-  rows: FinebankTransactionRow[]
-}) {
+export function FinebankTransactionsTable({ rows }: { rows: TransactionTableRow[] }) {
   return (
     <Card className="rounded-lg border-0 bg-white shadow-[0_20px_25px_0px_rgba(76,103,100,0.10)]">
       <CardContent className="p-0">
@@ -60,32 +56,36 @@ export function FinebankTransactionsTable({
               </TableRow>
             </TableHeader>
             <TableBody className="[&_tr]:border-b-[#f3f3f3]">
-              {rows.map((r) => (
-                <TableRow key={r.id} className="hover:bg-[#f4f5f7]/60">
-                  <TableCell className="px-8 py-5">
-                    <div className="flex items-center gap-4">
-                      <div className="rounded-lg bg-[rgba(210,210,210,0.25)] p-2">
-                        <Icon name={r.icon} />
-                      </div>
-                      <div className="text-sm font-semibold text-[#191919]">
-                        {r.item}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="px-4 py-5 text-sm text-[#666666]">
-                    {r.shopName}
-                  </TableCell>
-                  <TableCell className="px-4 py-5 text-sm text-[#666666]">
-                    {r.date}
-                  </TableCell>
-                  <TableCell className="px-4 py-5 text-sm text-[#666666]">
-                    {r.paymentMethod}
-                  </TableCell>
-                  <TableCell className="px-8 py-5 text-right text-sm font-semibold text-[#191919]">
-                    {r.amount}
+              {rows.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="px-8 py-10 text-center text-sm text-[#878787]">
+                    {'Ch\u01b0a c\u00f3 giao d\u1ecbch.'}
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                rows.map((r) => (
+                  <TableRow key={r.id} className="hover:bg-[#f4f5f7]/60">
+                    <TableCell className="px-8 py-5">
+                      <div className="flex items-center gap-4">
+                        <div className="rounded-lg bg-[rgba(210,210,210,0.25)] p-2">
+                          <Icon name={r.icon} />
+                        </div>
+                        <div className="text-sm font-semibold text-[#191919]">{r.item}</div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="px-4 py-5 text-sm text-[#666666]">{r.shopName}</TableCell>
+                    <TableCell className="px-4 py-5 text-sm text-[#666666]">{r.date}</TableCell>
+                    <TableCell className="px-4 py-5 text-sm text-[#666666]">{r.paymentMethod}</TableCell>
+                    <TableCell
+                      className={`px-8 py-5 text-right text-sm font-semibold ${
+                        r.amount.startsWith('+') ? 'text-[#299D91]' : 'text-[#191919]'
+                      }`}
+                    >
+                      {r.amount}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>
@@ -93,4 +93,3 @@ export function FinebankTransactionsTable({
     </Card>
   )
 }
-

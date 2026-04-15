@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import {
   Bar,
   BarChart,
@@ -13,21 +12,24 @@ import {
 } from 'recharts'
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { finebankWeeklyComparison } from '@/lib/mock/finebank-overview'
 
-export function FinebankStatisticsCard() {
+export type WeeklyComparisonPoint = {
+  day: string
+  thisWeek: number
+  lastWeek: number
+}
+
+export function FinebankStatisticsCard({ data }: { data: WeeklyComparisonPoint[] }) {
+  const chartData = data.length > 0 ? data : [{ day: '—', thisWeek: 0, lastWeek: 0 }]
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <div className="text-[22px] font-normal leading-8 text-[#878787]">
-          Statistics
-        </div>
+        <div className="text-[22px] font-normal leading-8 text-[#878787]">Statistics</div>
       </div>
       <Card className="rounded-lg border-0 bg-white shadow-[0_20px_25px_0px_rgba(76,103,100,0.10)]">
         <CardHeader className="flex-row items-center justify-between pb-0">
-          <div className="text-sm font-semibold text-[#191919]">
-            Weekly Comparison
-          </div>
+          <div className="text-sm font-semibold text-[#191919]">Weekly Comparison</div>
           <div className="flex items-center gap-6 text-xs text-[#878787]">
             <div className="flex items-center gap-2">
               <span className="inline-block size-2 rounded-sm bg-[#299D91]" />
@@ -43,7 +45,7 @@ export function FinebankStatisticsCard() {
           <div className="h-[240px] w-full">
             <ResponsiveContainer>
               <BarChart
-                data={finebankWeeklyComparison}
+                data={chartData}
                 margin={{ left: 6, right: 6, top: 10, bottom: 0 }}
                 barCategoryGap={16}
               >
@@ -67,24 +69,16 @@ export function FinebankStatisticsCard() {
                   }}
                 />
                 <Legend wrapperStyle={{ display: 'none' }} />
-                <Bar
-                  dataKey="lastWeek"
-                  fill="#E8E8E8"
-                  radius={[8, 8, 0, 0]}
-                  maxBarSize={22}
-                />
-                <Bar
-                  dataKey="thisWeek"
-                  fill="#299D91"
-                  radius={[8, 8, 0, 0]}
-                  maxBarSize={22}
-                />
+                <Bar dataKey="lastWeek" fill="#E8E8E8" radius={[8, 8, 0, 0]} maxBarSize={22} />
+                <Bar dataKey="thisWeek" fill="#299D91" radius={[8, 8, 0, 0]} maxBarSize={22} />
               </BarChart>
             </ResponsiveContainer>
           </div>
+          <p className="mt-2 text-center text-[11px] text-[#878787]">
+            {'Chi ti\u00eau (VND) theo ng\u00e0y \u2014 tu\u1ea7n UTC, b\u1eaft \u0111\u1ea7u Ch\u1ee7 nh\u1eadt'}
+          </p>
         </CardContent>
       </Card>
     </div>
   )
 }
-
