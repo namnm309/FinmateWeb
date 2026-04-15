@@ -85,6 +85,40 @@
     --input: 0 0% 91%;
     --ring: 174 58% 39%; /* ~ #299D91 */
   }
+
+  /* Typography normalization for dashboard pages */
+  .finmate,
+  .finmate * {
+    font-family: "Times New Roman", Times, serif;
+    letter-spacing: normal;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  .finmate h1 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  .finmate h2,
+  .finmate h3 {
+    font-size: 1.125rem;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  .finmate p,
+  .finmate li,
+  .finmate td,
+  .finmate th,
+  .finmate label,
+  .finmate input,
+  .finmate select,
+  .finmate textarea,
+  .finmate button {
+    line-height: 1.45;
+  }
 }
 
 @layer base {
@@ -93,6 +127,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
   }
 }
 

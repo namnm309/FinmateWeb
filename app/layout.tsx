@@ -1,12 +1,8 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
-
-const geist = Geist({ subsets: ['latin'] })
-const geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'FinMate - Quản lý tài chính thông minh với AI',
@@ -26,7 +22,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="vi" suppressHydrationWarning>
-        <body className={`${geist.className} ${geistMono.className} antialiased`} suppressHydrationWarning>
+        <body className="antialiased" suppressHydrationWarning>
           {children}
           <Toaster />
           <Analytics />
