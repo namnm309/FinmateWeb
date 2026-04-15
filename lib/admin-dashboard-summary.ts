@@ -25,6 +25,13 @@ export type AdminDashboardSummary = {
   generatedAtUtc: string
 }
 
+export type AdminUserMetricsPoint = {
+  date: string
+  activeUsers: number
+  newUsers: number
+  premiumBuyers: number
+}
+
 function beBaseUrl(): string {
   const v = process.env.NEXT_PUBLIC_BE_BASE_URL
   if (!v) throw new Error(`NEXT_PUBLIC_BE_BASE_URL is not set`)
@@ -43,4 +50,27 @@ export async function fetchAdminDashboardSummary(token: string): Promise<AdminDa
   }
 
   return (await res.json()) as AdminDashboardSummary
+}
+
+export async function fetchAdminUserMetrics(input: {
+  token: string
+  startDate?: Date
+  endDate?: Date
+}): Promise<AdminUserMetricsPoint[]> {
+  const params = new URLSearchParams()
+  if (input.startDate) params.set('startDate', input.startDate.toISOString())
+  if (input.endDate) params.set('endDate', input.endDate.toISOString())
+
+  const q = params.toString()
+  const res = await fetch(`${beBaseUrl()}/api/admin/dashboard-summary/user-metrics${q ? `?${q}` : ''}`, {
+    headers: { Authorization: `Bearer ${input.token}` },
+    cache: 'no-store',
+  })
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '')
+    throw new Error(`Failed to load user metrics: ${res.status} ${text}`)
+  }
+
+  return (await res.json()) as AdminUserMetricsPoint[]
 }
