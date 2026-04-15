@@ -1,7 +1,14 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+'use client'
 
-import { finebankBills } from '@/lib/mock/finebank-overview'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useAuth } from '@clerk/nextjs'
+
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { SectionTitle } from '@/components/dashboard/finebank/section-title'
+import {
+  fetchAdminDashboardSummary,
+  type AdminDashboardSummary,
+} from '@/lib/admin-dashboard-summary'
 
 function FinebankSurfaceCard({
   title,
@@ -28,104 +35,143 @@ function FinebankSurfaceCard({
 }
 
 export function FinebankOverviewTopRow() {
+  const { getToken } = useAuth()
+  const [summary, setSummary] = useState<AdminDashboardSummary | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fmtCurrency = useMemo(
+    () =>
+      new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+        maximumFractionDigits: 0,
+      }),
+    [],
+  )
+
+  const loadSummary = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      const token = await getToken()
+      if (!token) throw new Error('Thiếu token đăng nhập')
+
+      const data = await fetchAdminDashboardSummary(token)
+      setSummary(data)
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Không tải được dữ liệu'
+      setError(msg)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [getToken])
+
+  useEffect(() => {
+    void loadSummary()
+  }, [loadSummary])
+
+  const totalIncome = summary?.totalSystemIncomeVnd ?? 0
+  const customersWithGoals = summary?.customersWithGoals ?? 0
+  const expiringAccounts = summary?.premiumExpiringIn5Days ?? 0
+
   return (
     <div className="grid items-stretch gap-6 xl:grid-cols-3">
       <FinebankSurfaceCard
-        title="Total Balance"
+        title="Tổng thu nhập"
         right={
-          <div className="text-xs font-medium text-[#878787]">All Accounts</div>
+          <div className="text-xs font-medium text-[#878787]">Toàn hệ thống</div>
         }
       >
         <CardHeader className="pb-0">
           <div className="text-[24px] font-bold leading-7 text-[#191919]">
-            $240,399
+            {fmtCurrency.format(totalIncome)}
           </div>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col pt-5">
           <div className="rounded-lg bg-[#299D91] p-4 text-white">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <div className="text-xs opacity-90">Account Type</div>
-                <div className="text-sm font-semibold">Credit Card</div>
-                <div className="text-xs opacity-90">**** **** **** 2598</div>
-              </div>
-              <div className="rounded-md bg-white/15 px-2 py-1 text-xs">
-                Mastercard
-              </div>
+            <div className="text-sm">Tổng các giao dịch thu nhập đã ghi nhận</div>
+            <div className="mt-3 text-xs opacity-90">
+              {isLoading ? 'Đang tải dữ liệu...' : 'Cập nhật theo dữ liệu giao dịch thực tế'}
             </div>
-            <div className="mt-4 text-right text-sm font-semibold">$25000</div>
           </div>
-          <div className="mt-auto flex items-center justify-between pt-4 text-xs text-[#878787]">
-            <span>&lt; Previous</span>
-            <span>Next &gt;</span>
+          <div className="mt-auto pt-4 text-xs text-[#878787]">
+            {error ? `Lỗi: ${error}` : 'Nguồn dữ liệu: bảng giao dịch (thu nhập)'}
           </div>
         </CardContent>
       </FinebankSurfaceCard>
 
       <FinebankSurfaceCard
-        title="Goals"
-        right={<div className="text-xs font-medium text-[#878787]">May, 2023</div>}
+        title="Goal"
+        right={<div className="text-xs font-medium text-[#878787]">Đến hiện tại</div>}
       >
         <CardContent className="flex flex-1 flex-col pt-6">
           <div className="flex items-start justify-between gap-6">
             <div className="space-y-4">
               <div className="text-[24px] font-bold leading-7 text-[#191919]">
-                $20,000
+                {customersWithGoals.toLocaleString('vi-VN')}
               </div>
               <div className="space-y-2 text-sm">
                 <div className="text-[#525256]">
-                  <span className="text-[#878787]">Target Achieved</span>{' '}
-                  <span className="font-semibold text-[#191919]">$12,500</span>
-                </div>
-                <div className="text-[#525256]">
-                  <span className="text-[#878787]">This month Target</span>{' '}
-                  <span className="font-semibold text-[#191919]">$20,000</span>
+                  <span className="text-[#878787]">Số khách hàng đã đặt goal</span>{' '}
+                  <span className="font-semibold text-[#191919]">
+                    {customersWithGoals.toLocaleString('vi-VN')}
+                  </span>
                 </div>
               </div>
             </div>
             <div className="grid size-[120px] place-items-center rounded-full bg-[#f4f5f7]">
               <div className="grid size-[92px] place-items-center rounded-full bg-white shadow-sm">
                 <div className="text-center">
-                  <div className="text-xs text-[#878787]">Target</div>
-                  <div className="text-sm font-semibold text-[#191919]">12K</div>
+                  <div className="text-xs text-[#878787]">Khách hàng</div>
+                  <div className="text-sm font-semibold text-[#191919]">
+                    {customersWithGoals.toLocaleString('vi-VN')}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="mt-auto pt-6 text-xs text-[#878787]">
-            Target vs Achievement
+            Đếm theo số user khác nhau đã tạo goal
           </div>
         </CardContent>
       </FinebankSurfaceCard>
 
       <div className="flex h-full flex-col gap-4">
         <div className="min-h-8">
-          <SectionTitle title="Upcoming Bill" href="/dashboard/bills" />
+          <SectionTitle title="Sắp hết hạn premium" href="/dashboard/bills" />
         </div>
         <Card className="flex flex-1 flex-col rounded-lg border-0 bg-white shadow-[0_20px_25px_0px_rgba(76,103,100,0.10)]">
           <CardContent className="p-0">
             <div className="divide-y divide-[#f3f3f3]">
-              {finebankBills.map((b) => (
-                <div key={b.id} className="flex items-center gap-4 px-6 py-5">
-                  <div className="w-10 shrink-0 text-center">
-                    <div className="text-xs text-[#878787]">{b.month}</div>
-                    <div className="text-lg font-semibold text-[#191919]">
-                      {b.day}
-                    </div>
+              <div className="flex items-center gap-4 px-6 py-5">
+                <div className="w-10 shrink-0 text-center">
+                  <div className="text-xs text-[#878787]">Còn</div>
+                  <div className="text-lg font-semibold text-[#191919]">5</div>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-semibold text-[#191919]">
+                    Tài khoản premium sắp hết hạn
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold text-[#191919]">
-                      {b.title}
-                    </div>
-                    <div className="truncate text-xs text-[#9f9f9f]">
-                      {b.subtitle}
-                    </div>
-                  </div>
-                  <div className="shrink-0 rounded-lg bg-[#f4f5f7] px-3 py-2 text-sm font-semibold text-[#525256]">
-                    {b.amount}
+                  <div className="truncate text-xs text-[#9f9f9f]">
+                    Chỉ tính tài khoản còn hạn dưới 5 ngày
                   </div>
                 </div>
-              ))}
+                <div className="shrink-0 rounded-lg bg-[#f4f5f7] px-3 py-2 text-sm font-semibold text-[#525256]">
+                  {expiringAccounts.toLocaleString('vi-VN')}
+                </div>
+              </div>
+              <div className="px-6 py-4 text-xs text-[#878787]">
+                {isLoading
+                  ? 'Đang tải dữ liệu...'
+                  : 'Đếm theo user premium có gói đang active và còn hạn trong 5 ngày tới'}
+              </div>
+              {error ? (
+                <div className="px-6 pb-5 text-xs text-[#d14343]">
+                  Không tải được dữ liệu: {error}
+                </div>
+              ) : null}
             </div>
           </CardContent>
         </Card>

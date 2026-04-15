@@ -7,6 +7,9 @@ export type AdminDashboardSummary = {
     total: number
   }
   premiumRevenueVndThisMonth: number
+  totalSystemIncomeVnd: number
+  customersWithGoals: number
+  premiumExpiringIn5Days: number
   users: {
     total: number
     premium: number
