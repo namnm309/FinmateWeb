@@ -37,7 +37,7 @@ export default function TransactionsPage() {
 
   const load = React.useCallback(
     async (opts: { token: string; nextPage: number; append: boolean; activeTab: TabKey }) => {
-      const tid = typeIdForTab(activeTab)
+      const tid = typeIdForTab(opts.activeTab)
       const res = await fetchTransactions({
         token: opts.token,
         page: opts.nextPage,

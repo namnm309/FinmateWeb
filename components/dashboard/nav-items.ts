@@ -4,6 +4,7 @@ import {
   Banknote,
   FileText,
   LayoutDashboard,
+  Sparkles,
   Tag,
   ReceiptText,
   PiggyBank,
@@ -25,6 +26,7 @@ export const dashboardNav: DashboardNavItem[] = [
   { label: 'Expenses', href: '/dashboard/expenses', icon: ReceiptText },
   { label: 'Goals', href: '/dashboard/goals', icon: PiggyBank },
   { label: 'Pricing', href: '/dashboard/pricing', icon: Tag },
+  { label: 'AI Manage', href: '/dashboard/ai-manage', icon: Sparkles },
   { label: 'Premium orders', href: '/dashboard/premium-orders', icon: Crown },
   { label: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
