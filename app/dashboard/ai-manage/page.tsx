@@ -19,21 +19,21 @@ import {
 import { SectionTitle } from '@/components/dashboard/finebank/section-title'
 
 const t = {
-  title: 'AI Manage',
-  subtitle: 'Thong ke theo thang (UTC) cho toan bo user',
-  searchPlaceholder: 'Tim theo email / ho ten...',
-  periodPlaceholder: 'Ky (yyyy-MM), vd: 2026-04',
-  refresh: 'Tai lai',
-  sortChat: 'Sort: Chat',
-  sortPlan: 'Sort: Plan',
-  sortGoals: 'Sort: Goals',
-  user: 'User',
+  title: 'Qu\u1ea3n l\u00fd AI',
+  subtitle: 'Th\u1ed1ng k\u00ea theo th\u00e1ng (UTC) cho to\u00e0n b\u1ed9 ng\u01b0\u1eddi d\u00f9ng',
+  searchPlaceholder: 'T\u00ecm theo email / h\u1ecd t\u00ean...',
+  periodPlaceholder: 'K\u1ef3 (yyyy-MM), v\u00ed d\u1ee5: 2026-04',
+  refresh: 'T\u1ea3i l\u1ea1i',
+  sortChat: 'S\u1eafp x\u1ebfp: Chatbot',
+  sortPlan: 'S\u1eafp x\u1ebfp: L\u1eadp plan',
+  sortGoals: 'S\u1eafp x\u1ebfp: M\u1ee5c ti\u00eau',
+  user: 'Ng\u01b0\u1eddi d\u00f9ng',
   premium: 'Premium',
   chat: 'Chatbot',
-  plan: 'Lap plan',
-  goals: 'Goals',
-  total: 'Tong',
-  empty: 'Khong co du lieu.',
+  plan: 'L\u1eadp plan',
+  goals: 'M\u1ee5c ti\u00eau',
+  total: 'T\u1ed5ng',
+  empty: 'Kh\u00f4ng c\u00f3 d\u1eef li\u1ec7u.',
 }
 
 export default function AiManagePage() {
@@ -55,7 +55,7 @@ export default function AiManagePage() {
     setErr(null)
     try {
       const token = await getToken()
-      if (!token) throw new Error('No token')
+      if (!token) throw new Error('Ch\u01b0a \u0111\u0103ng nh\u1eadp')
       const res = await fetchAdminAiManage({
         token,
         periodKey: periodKey.trim() || undefined,
@@ -67,7 +67,7 @@ export default function AiManagePage() {
       })
       setData(res)
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Error')
+      setErr(e instanceof Error ? e.message : 'Kh\u00f4ng t\u1ea3i \u0111\u01b0\u1ee3c d\u1eef li\u1ec7u')
       setData(null)
     } finally {
       setLoading(false)
@@ -140,22 +140,22 @@ export default function AiManagePage() {
           {summary ? (
             <div className="grid gap-3 md:grid-cols-4">
               <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">Ky</div>
+                <div className="text-[#878787]">K\u1ef3</div>
                 <div className="mt-1 font-semibold text-[#191919]">{summary.periodKey}</div>
               </div>
               <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">Tong Chatbot</div>
+                <div className="text-[#878787]">T\u1ed5ng Chatbot</div>
                 <div className="mt-1 flex items-center gap-2 font-semibold text-[#191919]">
                   <Sparkles className="size-4 text-[#299D91]" />
                   {summary.totalChatCalls}
                 </div>
               </div>
               <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">Tong Lap plan</div>
+                <div className="text-[#878787]">T\u1ed5ng l\u1eadp plan</div>
                 <div className="mt-1 font-semibold text-[#191919]">{summary.totalPlanCalls}</div>
               </div>
               <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">User co su dung</div>
+                <div className="text-[#878787]">User c\u00f3 s\u1eed d\u1ee5ng</div>
                 <div className="mt-1 font-semibold text-[#191919]">{summary.usersWithUsage}</div>
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function AiManagePage() {
                 {loading ? (
                   <TableRow>
                     <TableCell colSpan={6} className="px-6 py-10 text-center text-sm text-[#878787]">
-                      Loading...
+                      {'\u0110ang t\u1ea3i...'}
                     </TableCell>
                   </TableRow>
                 ) : items.length === 0 ? (
@@ -209,10 +209,10 @@ export default function AiManagePage() {
 
           <div className="flex items-center justify-end gap-2">
             <Button type="button" variant="outline" disabled={!hasPrev || loading} onClick={() => setPage((p) => Math.max(1, p - 1))}>
-              Prev
+              {'Tr\u01b0\u1edbc'}
             </Button>
             <Button type="button" variant="outline" disabled={!hasNext || loading} onClick={() => setPage((p) => p + 1)}>
-              Next
+              {'Sau'}
             </Button>
           </div>
         </CardContent>

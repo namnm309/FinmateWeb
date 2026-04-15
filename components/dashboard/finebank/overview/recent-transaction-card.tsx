@@ -85,7 +85,7 @@ export function FinebankRecentTransactionCard({
 }) {
   return (
     <div className="flex h-full flex-col gap-4">
-      <SectionTitle title="Recent Transaction" href="/dashboard/transactions" />
+      <SectionTitle title={'Giao d\u1ecbch g\u1ea7n \u0111\u00e2y'} href="/dashboard/transactions" />
       <Card className="flex flex-1 flex-col rounded-lg border-0 bg-white shadow-[0_20px_25px_0px_rgba(76,103,100,0.10)]">
         <CardContent className="flex min-h-0 flex-1 flex-col px-6 pb-8 pt-4">
           <Tabs defaultValue="all">
@@ -94,19 +94,19 @@ export function FinebankRecentTransactionCard({
                 value="all"
                 className="rounded-none border-b-2 border-transparent px-2 py-2 text-base font-bold text-[#525256] data-[state=active]:border-[#299D91] data-[state=active]:bg-transparent data-[state=active]:text-[#299D91] data-[state=active]:shadow-none"
               >
-                All
+                {'T\u1ea5t c\u1ea3'}
               </TabsTrigger>
               <TabsTrigger
                 value="revenue"
                 className="rounded-none border-b-2 border-transparent px-2 py-2 text-base font-bold text-[#525256] data-[state=active]:border-[#299D91] data-[state=active]:bg-transparent data-[state=active]:text-[#299D91] data-[state=active]:shadow-none"
               >
-                Revenue
+                {'Thu'}
               </TabsTrigger>
               <TabsTrigger
                 value="expenses"
                 className="rounded-none border-b-2 border-transparent px-2 py-2 text-base font-bold text-[#525256] data-[state=active]:border-[#299D91] data-[state=active]:bg-transparent data-[state=active]:text-[#299D91] data-[state=active]:shadow-none"
               >
-                Expenses
+                {'Chi'}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="mt-2 flex min-h-0 flex-1">

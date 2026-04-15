@@ -19,15 +19,15 @@ export type DashboardNavItem = {
 }
 
 export const dashboardNav: DashboardNavItem[] = [
-  { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Balances', href: '/dashboard/balances', icon: Banknote },
-  { label: 'Transactions', href: '/dashboard/transactions', icon: ReceiptText },
-  { label: 'Bills', href: '/dashboard/bills', icon: FileText },
-  { label: 'Expenses', href: '/dashboard/expenses', icon: ReceiptText },
-  { label: 'Goals', href: '/dashboard/goals', icon: PiggyBank },
-  { label: 'Pricing', href: '/dashboard/pricing', icon: Tag },
-  { label: 'AI Manage', href: '/dashboard/ai-manage', icon: Sparkles },
-  { label: 'Premium orders', href: '/dashboard/premium-orders', icon: Crown },
-  { label: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { label: 'Tổng quan', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Số dư', href: '/dashboard/balances', icon: Banknote },
+  { label: 'Giao dịch', href: '/dashboard/transactions', icon: ReceiptText },
+  { label: 'Hóa đơn', href: '/dashboard/bills', icon: FileText },
+  { label: 'Chi tiêu', href: '/dashboard/expenses', icon: ReceiptText },
+  { label: 'Mục tiêu', href: '/dashboard/goals', icon: PiggyBank },
+  { label: 'Giá & gói', href: '/dashboard/pricing', icon: Tag },
+  { label: 'Quản lý AI', href: '/dashboard/ai-manage', icon: Sparkles },
+  { label: 'Đơn Premium', href: '/dashboard/premium-orders', icon: Crown },
+  { label: 'Cài đặt', href: '/dashboard/settings', icon: Settings },
 ]
 

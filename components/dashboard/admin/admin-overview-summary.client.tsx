@@ -88,7 +88,7 @@ export function AdminOverviewSummaryClient() {
           <Button asChild size="sm" variant="outline" className="border-[#299D91] text-[#299D91]">
             <Link href="/dashboard/premium-orders">
               <LayoutList className="mr-2 size-4" />
-              Premium orders
+              {'\u0110\u01a1n Premium'}
             </Link>
           </Button>
           <Button asChild size="sm" variant="outline" className="border-[#299D91] text-[#299D91]">

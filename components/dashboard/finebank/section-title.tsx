@@ -22,7 +22,7 @@ export function SectionTitle({
           href={href}
           className="flex items-center gap-2 text-xs font-medium text-[#878787] hover:underline"
         >
-          View All <ChevronRight className="size-4" />
+          {'Xem t\u1ea5t c\u1ea3'} <ChevronRight className="size-4" />
         </Link>
       ) : null}
     </div>

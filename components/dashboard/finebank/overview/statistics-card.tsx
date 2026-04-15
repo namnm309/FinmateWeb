@@ -25,19 +25,19 @@ export function FinebankStatisticsCard({ data }: { data: WeeklyComparisonPoint[]
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <div className="text-[22px] font-normal leading-8 text-[#878787]">Statistics</div>
+        <div className="text-[22px] font-normal leading-8 text-[#878787]">{'Th\u1ed1ng k\u00ea'}</div>
       </div>
       <Card className="rounded-lg border-0 bg-white shadow-[0_20px_25px_0px_rgba(76,103,100,0.10)]">
         <CardHeader className="flex-row items-center justify-between pb-0">
-          <div className="text-sm font-semibold text-[#191919]">Weekly Comparison</div>
+          <div className="text-sm font-semibold text-[#191919]">{'So s\u00e1nh theo tu\u1ea7n'}</div>
           <div className="flex items-center gap-6 text-xs text-[#878787]">
             <div className="flex items-center gap-2">
               <span className="inline-block size-2 rounded-sm bg-[#299D91]" />
-              This week
+              {'Tu\u1ea7n n\u00e0y'}
             </div>
             <div className="flex items-center gap-2">
               <span className="inline-block size-2 rounded-sm bg-[#E8E8E8]" />
-              Last week
+              {'Tu\u1ea7n tr\u01b0\u1edbc'}
             </div>
           </div>
         </CardHeader>

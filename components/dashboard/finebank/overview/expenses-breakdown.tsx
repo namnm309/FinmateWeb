@@ -19,7 +19,7 @@ export function FinebankExpensesBreakdown({ rows }: { rows: ExpenseBreakdownRow[
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-end justify-between">
-        <SectionTitle title="Expenses Breakdown" />
+        <SectionTitle title={'Ph\u00e2n b\u1ed5 chi ti\u00eau'} />
         <div className="text-xs text-[#878787]">
           {'So v\u1edbi th\u00e1ng tr\u01b0\u1edbc (UTC)'}
         </div>

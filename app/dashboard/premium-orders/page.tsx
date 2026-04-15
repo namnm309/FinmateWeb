@@ -61,7 +61,7 @@ export default function PremiumOrdersAdminPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-6 md:p-10">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Premium orders</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{'\u0110\u01a1n Premium'}</h1>
         <p className="text-sm text-muted-foreground">Theo dõi các đơn nâng cấp nhận qua chuyển khoản/QR (SePay webhook).</p>
       </div>
 

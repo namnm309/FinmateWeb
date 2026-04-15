@@ -133,7 +133,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard/settings">Settings</Link>
+                  <Link href="/dashboard/settings">{'C\u00e0i \u0111\u1eb7t'}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/">Về landing</Link>
@@ -148,7 +148,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-[#e8e8e8] bg-[#f4f5f7]/80 px-6 py-5 backdrop-blur supports-[backdrop-filter]:bg-[#f4f5f7]/60">
           <SidebarTrigger className="md:hidden" />
           <div className="flex items-center gap-6">
-            <div className="text-2xl font-bold leading-7">Hello {displayName.split(/\s+/)[0] ?? displayName}</div>
+            <div className="text-2xl font-bold leading-7">
+              {'Xin ch\u00e0o '}{displayName.split(/\s+/)[0] ?? displayName}
+            </div>
             <div className="text-sm text-[#9f9f9f]">{todayLabel}</div>
           </div>
 
@@ -163,8 +165,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             </Button>
             <div className="relative">
               <Input
-                placeholder="Search here"
-                aria-label="Search"
+                placeholder={'T\u00ecm ki\u1ebfm...'}
+                aria-label="Tim kiem"
                 className="h-12 w-[260px] rounded-xl border-0 bg-white pl-5 pr-12 text-base shadow-[0_26px_26px_0px_rgba(106,22,58,0.04)] placeholder:text-[#9f9f9f] focus-visible:ring-2 focus-visible:ring-[#299D91]"
               />
               <Search className="pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 text-[#9f9f9f]" />

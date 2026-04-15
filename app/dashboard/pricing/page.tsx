@@ -180,7 +180,7 @@ export default function DashboardPricingPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-6 md:p-10">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Pricing</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{'Gi\u00e1 & g\u00f3i Premium'}</h1>
         <p className="text-sm text-muted-foreground">
           Chỉnh giá hiển thị ở landing page (section “Nâng cấp tài khoản”). Chỉ Staff/Admin mới vào được.
         </p>
@@ -188,7 +188,7 @@ export default function DashboardPricingPage() {
 
       <Card className="bg-card/40">
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Premium plan configs</CardTitle>
+          <CardTitle className="text-sm font-medium">{'C\u1ea5u h\u00ecnh g\u00f3i Premium'}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {loading ? (

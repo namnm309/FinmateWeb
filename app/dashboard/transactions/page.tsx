@@ -100,7 +100,7 @@ export default function TransactionsPage() {
 
   return (
     <div className="w-full space-y-5 px-6 py-8">
-      <SectionTitle title="Recent Transaction" />
+      <SectionTitle title={'Giao d\u1ecbch'} />
 
       {err ? <p className="text-sm text-destructive">{err}</p> : null}
 
@@ -110,40 +110,40 @@ export default function TransactionsPage() {
             value="all"
             className="rounded-none border-b-2 border-transparent px-2 py-3 text-sm font-semibold text-[#666666] data-[state=active]:border-[#299D91] data-[state=active]:bg-transparent data-[state=active]:text-[#299D91] data-[state=active]:shadow-none"
           >
-            All
+            {'T\u1ea5t c\u1ea3'}
           </TabsTrigger>
           <TabsTrigger
             value="revenue"
             className="rounded-none border-b-2 border-transparent px-2 py-3 text-sm font-semibold text-[#666666] data-[state=active]:border-[#299D91] data-[state=active]:bg-transparent data-[state=active]:text-[#299D91] data-[state=active]:shadow-none"
           >
-            Revenue
+            {'Thu'}
           </TabsTrigger>
           <TabsTrigger
             value="expenses"
             className="rounded-none border-b-2 border-transparent px-2 py-3 text-sm font-semibold text-[#666666] data-[state=active]:border-[#299D91] data-[state=active]:bg-transparent data-[state=active]:text-[#299D91] data-[state=active]:shadow-none"
           >
-            Expenses
+            {'Chi'}
           </TabsTrigger>
         </TabsList>
 
         <div className="pt-4">
           <TabsContent value="all" className="m-0">
             {loading ? (
-              <p className="text-sm text-[#878787]">Loading...</p>
+              <p className="text-sm text-[#878787]">{'\u0110ang t\u1ea3i...'}</p>
             ) : (
               <FinebankTransactionsTable rows={rows} />
             )}
           </TabsContent>
           <TabsContent value="revenue" className="m-0">
             {loading ? (
-              <p className="text-sm text-[#878787]">Loading...</p>
+              <p className="text-sm text-[#878787]">{'\u0110ang t\u1ea3i...'}</p>
             ) : (
               <FinebankTransactionsTable rows={rows} />
             )}
           </TabsContent>
           <TabsContent value="expenses" className="m-0">
             {loading ? (
-              <p className="text-sm text-[#878787]">Loading...</p>
+              <p className="text-sm text-[#878787]">{'\u0110ang t\u1ea3i...'}</p>
             ) : (
               <FinebankTransactionsTable rows={rows} />
             )}
@@ -157,7 +157,7 @@ export default function TransactionsPage() {
             onClick={onLoadMore}
             className="h-11 w-[140px] rounded-md bg-[#299D91] text-white hover:bg-[#299D91]/90 disabled:opacity-50"
           >
-            {loadingMore ? '...' : hasMore ? 'Load More' : 'H\u1ebft d\u1eef li\u1ec7u'}
+            {loadingMore ? '...' : hasMore ? 'T\u1ea3i th\u00eam' : 'H\u1ebft d\u1eef li\u1ec7u'}
           </Button>
         </div>
       </Tabs>

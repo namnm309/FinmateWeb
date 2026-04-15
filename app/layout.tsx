@@ -5,8 +5,8 @@ import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geist = Geist({ subsets: ['latin'] })
+const geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'FinMate - Quản lý tài chính thông minh với AI',
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="vi" suppressHydrationWarning>
-        <body className="font-sans antialiased" suppressHydrationWarning>
+        <body className={`${geist.className} ${geistMono.className} antialiased`} suppressHydrationWarning>
           {children}
           <Toaster />
           <Analytics />
