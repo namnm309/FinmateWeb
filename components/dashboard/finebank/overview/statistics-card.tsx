@@ -4,7 +4,6 @@ import {
   Line,
   LineChart,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -20,6 +19,7 @@ export type UserMetricsPoint = {
   activeUsers: number
   newUsers: number
   premiumBuyers: number
+  fullDate?: string
 }
 
 export function FinebankStatisticsCard({
@@ -30,6 +30,7 @@ export function FinebankStatisticsCard({
   onSelect30Days,
   onApplyCustomRange,
   onChangeCustomRangeText,
+  customRangeError,
 }: {
   data: UserMetricsPoint[]
   rangeMode: '7d' | '30d' | 'custom'
@@ -38,8 +39,10 @@ export function FinebankStatisticsCard({
   onSelect30Days: () => void
   onApplyCustomRange: () => void
   onChangeCustomRangeText: (v: string) => void
+  customRangeError: string | null
 }) {
-  const chartData = data.length > 0 ? data : [{ label: '—', activeUsers: 0, newUsers: 0, premiumBuyers: 0 }]
+  const chartData = data.length > 0 ? data : [{ label: '—', activeUsers: 0, newUsers: 0, premiumBuyers: 0, fullDate: '—' }]
+  const xTickInterval = chartData.length > 16 ? 2 : chartData.length > 10 ? 1 : 0
 
   return (
     <div className="flex flex-col gap-4">
@@ -84,6 +87,9 @@ export function FinebankStatisticsCard({
               {'User mua premium'}
             </div>
           </div>
+          {customRangeError ? (
+            <p className="text-xs text-destructive">{customRangeError}</p>
+          ) : null}
         </CardHeader>
         <CardContent className="pt-6">
           <div className="h-[320px] w-full">
@@ -97,6 +103,8 @@ export function FinebankStatisticsCard({
                   dataKey="label"
                   tickLine={false}
                   axisLine={false}
+                  interval={xTickInterval}
+                  minTickGap={18}
                   tick={{ fill: '#878787', fontSize: 12 }}
                 />
                 <YAxis
@@ -110,8 +118,12 @@ export function FinebankStatisticsCard({
                     border: '1px solid #E8E8E8',
                     boxShadow: '0 10px 20px rgba(0,0,0,0.06)',
                   }}
+                  formatter={(value: number) => [value.toLocaleString('vi-VN'), 'User']}
+                  labelFormatter={(_, payload) => {
+                    const first = payload?.[0]?.payload as UserMetricsPoint | undefined
+                    return first?.fullDate ? `Ngày: ${first.fullDate}` : 'Ngày'
+                  }}
                 />
-                <Legend wrapperStyle={{ display: 'none' }} />
                 <Line type="monotone" dataKey="activeUsers" stroke="#299D91" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="newUsers" stroke="#3B82F6" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="premiumBuyers" stroke="#F59E0B" strokeWidth={2} dot={false} />

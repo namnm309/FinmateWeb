@@ -12,6 +12,11 @@ function toLabel(iso: string) {
   return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })
 }
 
+function toFullDate(iso: string) {
+  const d = new Date(`${iso}T00:00:00Z`)
+  return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+}
+
 function parseDdMmYyyy(text: string): Date | null {
   const m = text.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
   if (!m) return null
@@ -36,6 +41,7 @@ export function FinebankStatisticsCardClient() {
   const [rangeMode, setRangeMode] = useState<'7d' | '30d' | 'custom'>('7d')
   const [customRangeText, setCustomRangeText] = useState('')
   const [customRange, setCustomRange] = useState<{ start: Date; end: Date } | null>(null)
+  const [customRangeError, setCustomRangeError] = useState<string | null>(null)
 
   useEffect(() => {
     const { start, end } = rangeByDays(7)
@@ -65,6 +71,7 @@ export function FinebankStatisticsCardClient() {
           activeUsers: r.activeUsers,
           newUsers: r.newUsers,
           premiumBuyers: r.premiumBuyers,
+          fullDate: toFullDate(r.date),
         }))
         if (!cancelled) setData(mapped)
       } catch {
@@ -101,12 +108,20 @@ export function FinebankStatisticsCardClient() {
       onSelect7Days={() => setRangeMode('7d')}
       onSelect30Days={() => setRangeMode('30d')}
       onChangeCustomRangeText={setCustomRangeText}
+      customRangeError={customRangeError}
       onApplyCustomRange={() => {
         const parts = customRangeText.split('-')
-        if (parts.length < 2) return
+        if (parts.length < 2) {
+          setCustomRangeError('Nhập đúng định dạng: dd/mm/yyyy - dd/mm/yyyy')
+          return
+        }
         const start = parseDdMmYyyy(parts[0])
         const end = parseDdMmYyyy(parts[1])
-        if (!start || !end) return
+        if (!start || !end) {
+          setCustomRangeError('Ngày không hợp lệ. Ví dụ: 01/04/2026 - 15/04/2026')
+          return
+        }
+        setCustomRangeError(null)
         setCustomRange({ start, end })
         setRangeMode('custom')
       }}
