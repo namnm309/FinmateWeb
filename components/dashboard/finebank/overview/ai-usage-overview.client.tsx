@@ -5,28 +5,20 @@ import { useAuth } from '@clerk/nextjs'
 import { useEffect, useState } from 'react'
 import { Sparkles, MessageCircle } from 'lucide-react'
 
-import { fetchAiUsage, type AiUsageSnapshot } from '@/lib/ai-usage'
+import { fetchAiUsageOverall, type AiUsageOverall } from '@/lib/ai-usage-overall'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { SectionTitle } from '@/components/dashboard/finebank/section-title'
 
-function pct(used: number, limit: number) {
-  if (limit <= 0) return 0
-  return Math.min(100, Math.round((used / limit) * 100))
-}
-
 /** Chuoi tieng Viet (Unicode escape). */
-const TXT_USAGE_SUBTITLE = 'Theo th\u00e1ng (UTC), \u0111\u1ed3ng b\u1ed9 v\u1edbi Finmate-BE'
-const TXT_PERIOD = 'K\u1ef3:'
-const TXT_USED = '\u0110\u00e3 d\u00f9ng'
-const TXT_APP_HINT =
-  '\u1ee8ng d\u1ee5ng g\u1ecdi POST /api/chat k\u00e8m Bearer Clerk v\u00e0 aiFeature "plan" ho\u1eb7c "chat" \u0111\u1ec3 \u0111\u1ebfm \u0111\u00fang lo\u1ea1i.'
+const TXT_USAGE_SUBTITLE =
+  'T\u1ed5ng h\u1ee3p to\u00e0n h\u1ec7 th\u1ed1ng t\u1eeb l\u00fac app ra m\u1eaft \u0111\u1ebfn nay'
+const TXT_APP_HINT = 'D\u1eef li\u1ec7u l\u1ea5y t\u1eeb b\u1ea3ng ghi nh\u1eadn l\u01b0\u1ee3t g\u1ecdi AI c\u1ee7a to\u00e0n b\u1ed9 ng\u01b0\u1eddi d\u00f9ng.'
 
 export function AiUsageOverviewClient() {
   const { getToken, isLoaded, isSignedIn } = useAuth()
-  const [data, setData] = useState<AiUsageSnapshot | null>(null)
+  const [data, setData] = useState<AiUsageOverall | null>(null)
   const [err, setErr] = useState<string | null>(null)
 
   useEffect(() => {
@@ -37,7 +29,7 @@ export function AiUsageOverviewClient() {
       try {
         const token = await getToken()
         if (!token) throw new Error('Chưa có token đăng nhập')
-        const snap = await fetchAiUsage(token)
+        const snap = await fetchAiUsageOverall(token)
         if (!cancelled) {
           setData(snap)
           setErr(null)
@@ -70,17 +62,8 @@ export function AiUsageOverviewClient() {
             <div className="text-sm text-[#525256]">
               {data ? (
                 <>
-                  {TXT_PERIOD}{' '}
-                  <span className="font-semibold text-[#191919]">{data.periodKey}</span>
-                  {data.isPremium ? (
-                    <span className="ml-2 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-900">
-                      Premium
-                    </span>
-                  ) : (
-                    <span className="ml-2 rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
-                      Free
-                    </span>
-                  )}
+                  User đã dùng AI:{' '}
+                  <span className="font-semibold text-[#191919]">{data.usersWithUsage.toLocaleString('vi-VN')}</span>
                 </>
               ) : (
                 <Skeleton className="h-4 w-48" />
@@ -102,37 +85,41 @@ export function AiUsageOverviewClient() {
           ) : !data ? (
             <div className="space-y-4">
               <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-2 w-full" />
               <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-2 w-full" />
             </div>
           ) : (
             <>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm font-medium text-[#191919]">
-                  <Sparkles className="h-4 w-4 text-[#299D91]" />
-                  AI lập kế hoạch
+              <div className="grid gap-3 md:grid-cols-3">
+                <div className="rounded-lg bg-[#f4f5f7] p-3">
+                  <div className="flex items-center gap-2 text-sm font-medium text-[#191919]">
+                    <Sparkles className="h-4 w-4 text-[#299D91]" />
+                    Tổng lượt lập plan
+                  </div>
+                  <div className="mt-2 text-2xl font-bold text-[#191919]">
+                    {data.totalPlanCalls.toLocaleString('vi-VN')}
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs text-[#878787]">
-                  <span>
-                    {TXT_USED} {data.planCallsUsed} / {data.planCallsLimit} lượt
-                  </span>
-                  <span>{pct(data.planCallsUsed, data.planCallsLimit)}%</span>
+                <div className="rounded-lg bg-[#f4f5f7] p-3">
+                  <div className="flex items-center gap-2 text-sm font-medium text-[#191919]">
+                    <MessageCircle className="h-4 w-4 text-[#299D91]" />
+                    Tổng lượt chatbot
+                  </div>
+                  <div className="mt-2 text-2xl font-bold text-[#191919]">
+                    {data.totalChatCalls.toLocaleString('vi-VN')}
+                  </div>
                 </div>
-                <Progress value={pct(data.planCallsUsed, data.planCallsLimit)} className="h-2 bg-[#E8F3F1]" />
+                <div className="rounded-lg bg-[#f4f5f7] p-3">
+                  <div className="text-sm font-medium text-[#191919]">Tổng lượt gọi AI</div>
+                  <div className="mt-2 text-2xl font-bold text-[#191919]">
+                    {data.totalCalls.toLocaleString('vi-VN')}
+                  </div>
+                </div>
               </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm font-medium text-[#191919]">
-                  <MessageCircle className="h-4 w-4 text-[#299D91]" />
-                  AI chatbot
-                </div>
-                <div className="flex justify-between text-xs text-[#878787]">
-                  <span>
-                    {TXT_USED} {data.chatCallsUsed} / {data.chatCallsLimit} lượt
-                  </span>
-                  <span>{pct(data.chatCallsUsed, data.chatCallsLimit)}%</span>
-                </div>
-                <Progress value={pct(data.chatCallsUsed, data.chatCallsLimit)} className="h-2 bg-[#E8F3F1]" />
+              <div className="rounded-lg bg-[#f4f5f7] p-3 text-sm text-[#525256]">
+                <span className="font-medium text-[#191919]">
+                  User đã từng dùng AI:
+                </span>{' '}
+                {data.usersWithUsage.toLocaleString('vi-VN')}
               </div>
               <p className="text-xs text-[#878787]">{TXT_APP_HINT}</p>
             </>

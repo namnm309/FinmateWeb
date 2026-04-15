@@ -5,7 +5,7 @@ import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { SignOutButton, useAuth } from "@clerk/nextjs"
+import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs"
 import { Menu } from "lucide-react"
 import Link from "next/link" // Import Link for client-side navigation
 
@@ -69,6 +69,16 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
               </Button>
             </Link>
           ) : null}
+          {isLoaded && !isSignedIn ? (
+            <SignInButton mode="redirect" fallbackRedirectUrl="/dashboard" forceRedirectUrl="/dashboard">
+              <Button
+                variant="outline"
+                className="hidden md:inline-flex px-5 h-12 rounded-full text-base lg:text-lg font-medium"
+              >
+                Đăng nhập
+              </Button>
+            </SignInButton>
+          ) : null}
           {isLoaded && isSignedIn ? (
             <SignOutButton>
               <Button
@@ -106,6 +116,26 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
                     {item.name}
                   </Link>
                 ))}
+                {isLoaded && !isSignedIn ? (
+                  <SignInButton mode="redirect" fallbackRedirectUrl="/dashboard" forceRedirectUrl="/dashboard">
+                    <Button
+                      variant="outline"
+                      className="w-full mt-2 rounded-full font-medium"
+                    >
+                      Đăng nhập
+                    </Button>
+                  </SignInButton>
+                ) : null}
+                {isLoaded && isSignedIn ? (
+                  <SignOutButton>
+                    <Button
+                      variant="ghost"
+                      className="w-full mt-2 rounded-full font-medium"
+                    >
+                      Đăng xuất
+                    </Button>
+                  </SignOutButton>
+                ) : null}
                 <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="w-full mt-4">
                   <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-2 rounded-full font-medium shadow-sm">
                     Tải xuống
