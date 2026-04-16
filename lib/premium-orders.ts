@@ -102,12 +102,18 @@ export async function adminFetchPremiumOrders(input: {
   page?: number
   perPage?: number
   status?: string
+  plan?: PremiumPlanKey
+  minAmountVnd?: number
+  maxAmountVnd?: number
   q?: string
 }): Promise<AdminPremiumOrdersPage> {
   const params = new URLSearchParams()
   if (input.page) params.set('page', String(input.page))
   if (input.perPage) params.set('perPage', String(input.perPage))
   if (input.status) params.set('status', input.status)
+  if (input.plan) params.set('plan', input.plan)
+  if (typeof input.minAmountVnd === 'number' && Number.isFinite(input.minAmountVnd)) params.set('minAmountVnd', String(input.minAmountVnd))
+  if (typeof input.maxAmountVnd === 'number' && Number.isFinite(input.maxAmountVnd)) params.set('maxAmountVnd', String(input.maxAmountVnd))
   if (input.q) params.set('q', input.q)
 
   const res = await fetch(`${beBaseUrl()}/api/admin/premium-orders?${params.toString()}`, {

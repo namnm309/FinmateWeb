@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useAuth } from "@clerk/nextjs"
 
-import { adminFetchPremiumOrders, type AdminPremiumOrderRow } from "@/lib/premium-orders"
+import { adminFetchPremiumOrders, type AdminPremiumOrderRow, type PremiumPlanKey } from "@/lib/premium-orders"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,14 @@ import { Label } from "@/components/ui/label"
 
 function formatVnd(v: number) {
   return new Intl.NumberFormat("vi-VN").format(v)
+}
+
+function parseVndInput(raw: string): number | undefined {
+  const digits = raw.replace(/[^\d]/g, "")
+  if (!digits) return undefined
+  const n = Number(digits)
+  if (!Number.isFinite(n)) return undefined
+  return n
 }
 
 export default function PremiumOrdersAdminPage() {
@@ -22,7 +30,10 @@ export default function PremiumOrdersAdminPage() {
   const [page, setPage] = React.useState<number>(1)
   const [perPage] = React.useState<number>(20)
   const [status, setStatus] = React.useState<string>("")
+  const [plan, setPlan] = React.useState<PremiumPlanKey | "">("")
   const [q, setQ] = React.useState<string>("")
+  const [minAmount, setMinAmount] = React.useState<string>("")
+  const [maxAmount, setMaxAmount] = React.useState<string>("")
 
   const [loading, setLoading] = React.useState<boolean>(true)
   const [error, setError] = React.useState<string | null>(null)
@@ -39,6 +50,9 @@ export default function PremiumOrdersAdminPage() {
         page,
         perPage,
         status: status || undefined,
+        plan: plan || undefined,
+        minAmountVnd: parseVndInput(minAmount),
+        maxAmountVnd: parseVndInput(maxAmount),
         q: q.trim() || undefined,
       })
       setItems(res.items)
@@ -50,7 +64,7 @@ export default function PremiumOrdersAdminPage() {
     } finally {
       setLoading(false)
     }
-  }, [getToken, page, perPage, q, status])
+  }, [getToken, maxAmount, minAmount, page, perPage, plan, q, status])
 
   React.useEffect(() => {
     void load()
@@ -88,7 +102,54 @@ export default function PremiumOrdersAdminPage() {
               <option value="Cancelled">Cancelled</option>
             </select>
           </div>
-          <div className="md:col-span-6 space-y-2">
+
+          <div className="md:col-span-3 space-y-2">
+            <Label htmlFor="plan">Gói</Label>
+            <select
+              id="plan"
+              className="h-10 w-full rounded-md border bg-background px-3 text-sm"
+              value={plan}
+              onChange={(e) => {
+                setPage(1)
+                setPlan(e.target.value)
+              }}
+            >
+              <option value="">Tất cả</option>
+              <option value="1-month">1-month</option>
+              <option value="6-month">6-month</option>
+              <option value="1-year">1-year</option>
+            </select>
+          </div>
+
+          <div className="md:col-span-3 space-y-2">
+            <Label htmlFor="minAmount">Giá từ (VND)</Label>
+            <Input
+              id="minAmount"
+              inputMode="numeric"
+              placeholder="Ví dụ: 99000"
+              value={minAmount}
+              onChange={(e) => {
+                setPage(1)
+                setMinAmount(e.target.value)
+              }}
+            />
+          </div>
+
+          <div className="md:col-span-3 space-y-2">
+            <Label htmlFor="maxAmount">Giá đến (VND)</Label>
+            <Input
+              id="maxAmount"
+              inputMode="numeric"
+              placeholder="Ví dụ: 999000"
+              value={maxAmount}
+              onChange={(e) => {
+                setPage(1)
+                setMaxAmount(e.target.value)
+              }}
+            />
+          </div>
+
+          <div className="md:col-span-9 space-y-2">
             <Label htmlFor="q">Tìm kiếm</Label>
             <Input
               id="q"
