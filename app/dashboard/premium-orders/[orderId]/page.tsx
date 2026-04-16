@@ -40,7 +40,7 @@ export default function PremiumOrderDetailPage({ params }: { params: { orderId: 
   }, [load])
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 p-6 md:p-10">
+    <div className="w-full space-y-6 px-6 py-8">
       <div className="flex items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Chi tiết đơn</h1>

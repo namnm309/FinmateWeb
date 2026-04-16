@@ -95,6 +95,28 @@ export type AdminPremiumOrdersPage = {
   page: number
   perPage: number
   total: number
+  charts: PremiumOrdersCharts
+}
+
+export type OrdersByDayPoint = {
+  date: string // yyyy-MM-dd (UTC)
+  count: number
+}
+
+export type RevenueByDayPoint = {
+  date: string // yyyy-MM-dd (UTC)
+  amountVnd: number
+}
+
+export type PlanBreakdownPoint = {
+  plan: PremiumPlanKey
+  count: number
+}
+
+export type PremiumOrdersCharts = {
+  ordersByDay: OrdersByDayPoint[]
+  revenueByDay: RevenueByDayPoint[]
+  planBreakdown: PlanBreakdownPoint[]
 }
 
 export async function adminFetchPremiumOrders(input: {

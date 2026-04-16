@@ -178,7 +178,7 @@ export default function DashboardPricingPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6 md:p-10">
+    <div className="w-full space-y-6 px-6 py-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{'Gi\u00e1 & g\u00f3i Premium'}</h1>
         <p className="text-sm text-muted-foreground">

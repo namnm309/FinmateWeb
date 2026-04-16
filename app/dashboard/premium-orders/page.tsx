@@ -4,11 +4,17 @@ import * as React from "react"
 import Link from "next/link"
 import { useAuth } from "@clerk/nextjs"
 
-import { adminFetchPremiumOrders, type AdminPremiumOrderRow, type PremiumPlanKey } from "@/lib/premium-orders"
+import {
+  adminFetchPremiumOrders,
+  type AdminPremiumOrderRow,
+  type PremiumOrdersCharts,
+  type PremiumPlanKey,
+} from "@/lib/premium-orders"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PremiumOrdersChartsSection } from "@/components/dashboard/premium-orders/premium-orders-charts"
 
 function formatVnd(v: number) {
   return new Intl.NumberFormat("vi-VN").format(v)
@@ -37,6 +43,7 @@ export default function PremiumOrdersAdminPage() {
 
   const [loading, setLoading] = React.useState<boolean>(true)
   const [error, setError] = React.useState<string | null>(null)
+  const [charts, setCharts] = React.useState<PremiumOrdersCharts | null>(null)
 
   const load = React.useCallback(async () => {
     setLoading(true)
@@ -57,10 +64,12 @@ export default function PremiumOrdersAdminPage() {
       })
       setItems(res.items)
       setTotal(res.total)
+      setCharts(res.charts)
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : String(e))
       setItems(null)
       setTotal(0)
+      setCharts(null)
     } finally {
       setLoading(false)
     }
@@ -73,11 +82,13 @@ export default function PremiumOrdersAdminPage() {
   const pageCount = Math.max(1, Math.ceil(total / perPage))
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6 md:p-10">
+    <div className="w-full space-y-6 px-6 py-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{'\u0110\u01a1n Premium'}</h1>
         <p className="text-sm text-muted-foreground">Theo dõi các đơn nâng cấp nhận qua chuyển khoản/QR (SePay webhook).</p>
       </div>
+
+      <PremiumOrdersChartsSection charts={charts} isLoading={loading} />
 
       <Card className="bg-card/40">
         <CardHeader>
