@@ -70,7 +70,7 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
             </Link>
           ) : null}
           {isLoaded && !isSignedIn ? (
-            <SignInButton mode="redirect" fallbackRedirectUrl="/dashboard" forceRedirectUrl="/dashboard">
+            <SignInButton mode="redirect">
               <Button
                 variant="outline"
                 className="hidden md:inline-flex px-5 h-12 rounded-full text-base lg:text-lg font-medium"
@@ -117,7 +117,7 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
                   </Link>
                 ))}
                 {isLoaded && !isSignedIn ? (
-                  <SignInButton mode="redirect" fallbackRedirectUrl="/dashboard" forceRedirectUrl="/dashboard">
+                  <SignInButton mode="redirect">
                     <Button
                       variant="outline"
                       className="w-full mt-2 rounded-full font-medium"

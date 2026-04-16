@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   try {
     await assertStaffOrAdmin(token)
   } catch {
-    redirect('/debug-auth')
+    redirect('/')
   }
 
   return <DashboardShell>{children}</DashboardShell>
