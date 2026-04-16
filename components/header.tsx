@@ -4,6 +4,7 @@ import type React from "react"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
+import { LandingPrimaryActions } from "@/components/landing-primary-actions"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs"
 import { Menu } from "lucide-react"
@@ -89,11 +90,11 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
               </Button>
             </SignOutButton>
           ) : null}
-          <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="hidden md:block">
-            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-8 h-12 rounded-full text-base lg:text-lg font-medium shadow-sm">
-              Tải xuống
-            </Button>
-          </Link>
+          <LandingPrimaryActions
+            className="hidden md:flex"
+            primaryButtonClassName="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-8 h-12 rounded-full text-base lg:text-lg font-medium shadow-sm"
+            secondaryButtonClassName="px-5 h-12 rounded-full text-base lg:text-lg font-medium shadow-sm"
+          />
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" className="text-foreground h-11 w-11">
@@ -136,11 +137,12 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
                     </Button>
                   </SignOutButton>
                 ) : null}
-                <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="w-full mt-4">
-                  <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-2 rounded-full font-medium shadow-sm">
-                    Tải xuống
-                  </Button>
-                </Link>
+                <LandingPrimaryActions
+                  className="w-full mt-4 flex-col"
+                  fullWidth
+                  primaryButtonClassName="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-2 rounded-full font-medium shadow-sm"
+                  secondaryButtonClassName="w-full rounded-full font-medium"
+                />
               </nav>
             </SheetContent>
           </Sheet>

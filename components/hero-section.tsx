@@ -1,7 +1,6 @@
 import React from "react"
-import { Button } from "@/components/ui/button"
 import { Header } from "./header"
-import Link from "next/link"
+import { LandingPrimaryActions } from "./landing-primary-actions"
 import { auth } from "@clerk/nextjs/server"
 
 import { assertStaffOrAdmin } from "@/lib/be"
@@ -486,11 +485,12 @@ export async function HeroSection() {
             ))}
           </ul>
 
-          <Link href="#pricing-section">
-            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-10 py-4 rounded-full font-medium text-base sm:text-lg shadow-lg ring-1 ring-white/10 mt-3 h-12 sm:h-14">
-              Tải xuống
-            </Button>
-          </Link>
+          <LandingPrimaryActions
+            className="mt-3 flex-col sm:flex-row"
+            fullWidth
+            primaryButtonClassName="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-10 py-4 rounded-full font-medium text-base sm:text-lg shadow-lg ring-1 ring-white/10 h-12 sm:h-14 w-full sm:w-auto"
+            secondaryButtonClassName="h-12 sm:h-14 rounded-full px-6 text-base sm:text-lg font-medium w-full sm:w-auto"
+          />
         </div>
 
         {/* Right: 3-phone mockup */}

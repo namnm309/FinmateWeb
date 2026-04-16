@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
@@ -70,9 +71,18 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <SidebarHeader className="gap-4 p-6">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div className="text-xl font-semibold tracking-wide">Finmate</div>
+            <Image
+              src="/finmate-logo.png"
+              alt="Logo FinMate"
+              width={40}
+              height={40}
+              className="h-9 w-9 shrink-0"
+            />
+            <span className="text-2xl font-semibold text-white group-data-[collapsible=icon]:hidden">
+              FinMate
+            </span>
           </Link>
         </SidebarHeader>
 
