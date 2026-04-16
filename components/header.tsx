@@ -2,10 +2,11 @@
 
 import type React from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs"
+import { SignOutButton, useAuth } from "@clerk/nextjs"
 import { Menu } from "lucide-react"
 import Link from "next/link" // Import Link for client-side navigation
 
@@ -15,6 +16,7 @@ type HeaderProps = {
 
 export function Header({ showDashboardButton = false }: HeaderProps) {
   const { isLoaded, isSignedIn } = useAuth()
+  const router = useRouter()
 
   const navItems = [
     { name: "Tính năng", href: "#features-section" },
@@ -70,14 +72,14 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
             </Link>
           ) : null}
           {isLoaded && !isSignedIn ? (
-            <SignInButton mode="redirect">
-              <Button
-                variant="outline"
-                className="hidden md:inline-flex px-5 h-12 rounded-full text-base lg:text-lg font-medium"
-              >
-                Đăng nhập
-              </Button>
-            </SignInButton>
+            <Button
+              type="button"
+              variant="outline"
+              className="hidden md:inline-flex px-5 h-12 rounded-full text-base lg:text-lg font-medium"
+              onClick={() => router.push("/sign-in")}
+            >
+              Đăng nhập
+            </Button>
           ) : null}
           {isLoaded && isSignedIn ? (
             <SignOutButton>
@@ -117,14 +119,14 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
                   </Link>
                 ))}
                 {isLoaded && !isSignedIn ? (
-                  <SignInButton mode="redirect">
-                    <Button
-                      variant="outline"
-                      className="w-full mt-2 rounded-full font-medium"
-                    >
-                      Đăng nhập
-                    </Button>
-                  </SignInButton>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full mt-2 rounded-full font-medium"
+                    onClick={() => router.push("/sign-in")}
+                  >
+                    Đăng nhập
+                  </Button>
                 ) : null}
                 {isLoaded && isSignedIn ? (
                   <SignOutButton>

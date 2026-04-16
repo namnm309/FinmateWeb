@@ -138,25 +138,33 @@ export default function AiManagePage() {
           {err ? <p className="text-sm text-destructive">{err}</p> : null}
 
           {summary ? (
-            <div className="grid gap-3 md:grid-cols-4">
-              <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">K\u1ef3</div>
-                <div className="mt-1 font-semibold text-[#191919]">{summary.periodKey}</div>
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-xl border border-[#e7eaee] bg-white px-4 py-3 shadow-sm">
+                <div className="font-sans text-xs font-medium text-[#878787]">K\u1ef3</div>
+                <div className="mt-2 font-sans text-base font-semibold leading-6 text-[#191919]">{summary.periodKey}</div>
               </div>
-              <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">T\u1ed5ng Chatbot</div>
-                <div className="mt-1 flex items-center gap-2 font-semibold text-[#191919]">
-                  <Sparkles className="size-4 text-[#299D91]" />
+              <div className="rounded-xl border border-[#dcefe9] bg-[#f6fbfa] px-4 py-3 shadow-sm">
+                <div className="font-sans text-xs font-medium text-[#6b7b78]">
+                  T\u1ed5ng Chatbot
+                </div>
+                <div className="mt-2 flex items-center gap-2 font-sans text-base font-semibold leading-6 text-[#191919]">
+                  <span className="inline-flex size-7 items-center justify-center rounded-full bg-[#e4f4f1]">
+                    <Sparkles className="size-4 text-[#299D91]" />
+                  </span>
                   {summary.totalChatCalls}
                 </div>
               </div>
-              <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">T\u1ed5ng l\u1eadp plan</div>
-                <div className="mt-1 font-semibold text-[#191919]">{summary.totalPlanCalls}</div>
+              <div className="rounded-xl border border-[#e7eaee] bg-white px-4 py-3 shadow-sm">
+                <div className="font-sans text-xs font-medium text-[#878787]">
+                  T\u1ed5ng l\u1eadp plan
+                </div>
+                <div className="mt-2 font-sans text-base font-semibold leading-6 text-[#191919]">{summary.totalPlanCalls}</div>
               </div>
-              <div className="rounded-lg bg-[#f4f5f7] p-3 text-xs">
-                <div className="text-[#878787]">User c\u00f3 s\u1eed d\u1ee5ng</div>
-                <div className="mt-1 font-semibold text-[#191919]">{summary.usersWithUsage}</div>
+              <div className="rounded-xl border border-[#e7eaee] bg-white px-4 py-3 shadow-sm">
+                <div className="font-sans text-xs font-medium text-[#878787]">
+                  User c\u00f3 s\u1eed d\u1ee5ng
+                </div>
+                <div className="mt-2 font-sans text-base font-semibold leading-6 text-[#191919]">{summary.usersWithUsage}</div>
               </div>
             </div>
           ) : null}
