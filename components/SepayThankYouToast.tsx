@@ -23,33 +23,37 @@ export default function SepayThankYouToast() {
   const { isLoaded, isSignedIn, getToken } = useAuth()
 
   const [open, setOpen] = React.useState(false)
+  const [intent, setIntent] = React.useState<{ payment: string; orderId: string | null } | null>(null)
   const [statusText, setStatusText] = React.useState<string>("")
   const [error, setError] = React.useState<string | null>(null)
   const [iosUrl, setIosUrl] = React.useState<string | null>(null)
   const [androidUrl, setAndroidUrl] = React.useState<string | null>(null)
 
-  const payment = sp.get("payment")
-  const orderId = sp.get("orderId")
+  const paymentParam = sp.get("payment")
+  const orderIdParam = sp.get("orderId")
 
   React.useEffect(() => {
-    if (!payment) return
+    if (!paymentParam) return
+    if (intent) return
 
     // Always clean URL so popup doesn't repeat on refresh.
     router.replace("/", { scroll: false })
 
-    if (payment === "cancel") {
+    setIntent({ payment: paymentParam, orderId: orderIdParam })
+
+    if (paymentParam === "cancel") {
       setStatusText("Bạn đã hủy thanh toán.")
       setOpen(true)
       return
     }
 
-    if (payment === "error") {
+    if (paymentParam === "error") {
       setStatusText("Thanh toán chưa thành công.")
       setOpen(true)
       return
     }
 
-    if (payment !== "success") return
+    if (paymentParam !== "success") return
 
     setOpen(true)
     setError(null)
@@ -58,7 +62,7 @@ export default function SepayThankYouToast() {
     let cancelled = false
     const run = async () => {
       try {
-        if (!orderId) throw new Error("Thiếu orderId.")
+        if (!orderIdParam) throw new Error("Thiếu orderId.")
         if (!isLoaded) return
         if (!isSignedIn) throw new Error("Vui lòng đăng nhập để xác nhận thanh toán.")
 
@@ -68,7 +72,7 @@ export default function SepayThankYouToast() {
         const startedAt = Date.now()
         const timeoutMs = 60_000
         while (!cancelled) {
-          const order = await fetchPremiumOrder({ token, id: orderId })
+          const order = await fetchPremiumOrder({ token, id: orderIdParam })
           if (order.status === "Paid") break
           if (order.status === "Expired" || order.status === "Cancelled") {
             throw new Error(`Đơn đã chuyển trạng thái: ${order.status}`)
@@ -97,17 +101,29 @@ export default function SepayThankYouToast() {
     return () => {
       cancelled = true
     }
-  }, [getToken, isLoaded, isSignedIn, orderId, payment, router])
+  }, [getToken, intent, isLoaded, isSignedIn, orderIdParam, paymentParam, router])
 
-  if (!payment) return null
+  if (!intent) return null
 
   const hasDownload = Boolean(iosUrl || androidUrl)
-  const isSuccess = payment === "success"
-  const isCancel = payment === "cancel"
+  const isSuccess = intent.payment === "success"
+  const isCancel = intent.payment === "cancel"
   const title = isSuccess ? "Cảm ơn bạn đã nâng cấp gói" : isCancel ? "Đã hủy thanh toán" : "Thanh toán lỗi"
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next)
+        if (!next) {
+          setIntent(null)
+          setError(null)
+          setStatusText("")
+          setIosUrl(null)
+          setAndroidUrl(null)
+        }
+      }}
+    >
       <DialogContent className="sm:max-w-[460px]">
         <DialogHeader>
           <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
@@ -151,7 +167,11 @@ export default function SepayThankYouToast() {
         ) : null}
 
         <DialogFooter>
-          <Button variant={isSuccess ? "default" : "outline"} onClick={() => setOpen(false)} className="w-full sm:w-auto">
+          <Button
+            variant={isSuccess ? "default" : "outline"}
+            onClick={() => setOpen(false)}
+            className="w-full sm:w-auto"
+          >
             {isSuccess ? "Bắt đầu sử dụng ngay" : "Đóng"}
           </Button>
         </DialogFooter>
