@@ -16,7 +16,16 @@ export async function fetchAppDownloadConfig(): Promise<AppDownloadConfig> {
     const text = await res.text().catch(() => "")
     throw new Error(`Failed to load app download config: ${res.status} ${text}`)
   }
-  return (await res.json()) as AppDownloadConfig
+  const raw = (await res.json()) as AppDownloadConfig
+  const norm = (v: string | null) => {
+    const s = typeof v === "string" ? v.trim() : null
+    return s ? s : null
+  }
+  return {
+    ...raw,
+    iosUrl: norm(raw.iosUrl),
+    androidUrl: norm(raw.androidUrl),
+  }
 }
 
 export async function adminUpsertAppDownloadConfig(input: {
