@@ -22,20 +22,27 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
   const [signingOut, setSigningOut] = useState(false)
   const signOutInFlightRef = useRef(false)
 
+  /** Thời gian tối đa chờ Clerk; sau đó vẫn `replace` để tránh kẹt “Đang đăng xuất…” khi POST RSC/server action (vd. tới `/`) lỗi 500 và promise không bao giờ settle. */
+  const SIGN_OUT_WAIT_MS = 4000
+
   /**
-   * Xóa session Clerk trước, rồi `location.replace` full page tới /sign-in.
-   * Tránh `signOut({ redirectUrl })` (soft nav): nếu cookie còn sót, `<SignIn />` thấy vẫn đăng nhập → tự redirect như “tự login”.
+   * Gọi `signOut()` rồi luôn `location.replace` tới /sign-in (full page).
+   * Không dùng `signOut({ redirectUrl })` vì soft navigation dễ để cookie/session lệch với RSC cache.
    */
   const handleSignOut = useCallback(async () => {
     if (signOutInFlightRef.current) return
     signOutInFlightRef.current = true
     setSigningOut(true)
     try {
-      await signOut()
-    } catch {
-      /* vẫn ép điều hướng */
+      await Promise.race([
+        signOut().catch(() => {
+          /* lỗi mạng / server — vẫn điều hướng cứng bên dưới */
+        }),
+        new Promise<void>((resolve) => window.setTimeout(resolve, SIGN_OUT_WAIT_MS)),
+      ])
+    } finally {
+      window.location.replace("/sign-in")
     }
-    window.location.replace("/sign-in")
   }, [signOut])
 
   const navItems = [

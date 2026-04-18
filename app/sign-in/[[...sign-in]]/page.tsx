@@ -1,8 +1,15 @@
 import Image from "next/image"
 import Link from "next/link"
 import { SignIn } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 
-export default function Page() {
+export default async function Page() {
+  const { userId } = await auth()
+  if (userId) {
+    redirect('/')
+  }
+
   return (
     <div className="min-h-svh bg-[#F4F5F7] px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto grid min-h-[calc(100svh-3rem)] w-full max-w-7xl overflow-hidden rounded-[32px] border border-white/60 bg-white/70 shadow-[0_20px_80px_rgba(15,23,42,0.08)] backdrop-blur lg:grid-cols-[minmax(0,1fr)_600px]">
@@ -76,6 +83,8 @@ export default function Page() {
             <SignIn
               path="/sign-in"
               routing="path"
+              fallbackRedirectUrl="/"
+              signUpFallbackRedirectUrl="/"
               appearance={{
                 variables: {
                   colorPrimary: '#299D91',
