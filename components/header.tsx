@@ -21,31 +21,21 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
   const router = useRouter()
   const [signingOut, setSigningOut] = useState(false)
   const signOutInFlightRef = useRef(false)
-  const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   /**
-   * Đăng xuất → /sign-in (tránh về `/` nếu RSC trang chủ lỗi 500).
-   * Fallback: sau ~1s vẫn chưa vào /sign-in thì ép full navigation.
+   * Xóa session Clerk trước, rồi `location.replace` full page tới /sign-in.
+   * Tránh `signOut({ redirectUrl })` (soft nav): nếu cookie còn sót, `<SignIn />` thấy vẫn đăng nhập → tự redirect như “tự login”.
    */
   const handleSignOut = useCallback(async () => {
     if (signOutInFlightRef.current) return
     signOutInFlightRef.current = true
     setSigningOut(true)
-    if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current)
-
-    fallbackTimerRef.current = setTimeout(() => {
-      if (!window.location.pathname.startsWith("/sign-in")) {
-        window.location.replace("/sign-in")
-      }
-      fallbackTimerRef.current = null
-    }, 1000)
-
     try {
-      await signOut({ redirectUrl: "/sign-in" })
+      await signOut()
     } catch {
-      if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current)
-      window.location.replace("/sign-in")
+      /* vẫn ép điều hướng */
     }
+    window.location.replace("/sign-in")
   }, [signOut])
 
   const navItems = [
