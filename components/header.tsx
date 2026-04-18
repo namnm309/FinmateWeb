@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { useCallback } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -19,6 +20,15 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
   const { signOut } = useClerk()
   const router = useRouter()
 
+  /** Đăng xuất về /sign-in (full navigation) để tránh RSC POST / lỗi 500 khi redirect về trang chủ. */
+  const handleSignOut = useCallback(async () => {
+    try {
+      await signOut({ redirectUrl: "/sign-in" })
+    } catch {
+      window.location.replace("/sign-in")
+    }
+  }, [signOut])
+
   const navItems = [
     { name: "Tính năng", href: "#features-section" },
     { name: "Gói cước", href: "#pricing-section" },
@@ -35,7 +45,7 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
   }
 
   return (
-    <header className="w-full py-5 md:py-6 px-4 sm:px-6 md:px-8">
+    <header className="relative z-[110] w-full py-5 md:py-6 px-4 sm:px-6 md:px-8 pointer-events-auto">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-7 md:gap-8">
           <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
@@ -86,8 +96,8 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
             <Button
               type="button"
               variant="ghost"
-              className="hidden md:inline-flex px-5 h-12 rounded-full text-base lg:text-lg font-medium"
-              onClick={() => void signOut({ redirectUrl: "/" })}
+              className="hidden md:inline-flex cursor-pointer px-5 h-12 rounded-full text-base lg:text-lg font-medium"
+              onClick={() => void handleSignOut()}
             >
               Đăng xuất
             </Button>
@@ -133,8 +143,8 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
                   <Button
                     type="button"
                     variant="ghost"
-                    className="w-full mt-2 rounded-full font-medium"
-                    onClick={() => void signOut({ redirectUrl: "/" })}
+                    className="w-full mt-2 cursor-pointer rounded-full font-medium"
+                    onClick={() => void handleSignOut()}
                   >
                     Đăng xuất
                   </Button>

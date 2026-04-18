@@ -448,8 +448,8 @@ export async function HeroSection() {
         </svg>
       </div>
 
-      {/* Header positioned at top of hero container */}
-      <div className="absolute top-0 left-0 right-0 z-20">
+      {/* Header: z cao + pointer-events để không bị lớp hero/RSC chặn click (vd. Đăng xuất). */}
+      <div className="pointer-events-auto absolute top-0 left-0 right-0 z-[100]">
         <Header showDashboardButton={showDashboardButton} />
       </div>
 
