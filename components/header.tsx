@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useCallback } from "react"
+import { useCallback, useRef, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -19,12 +19,31 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
   const { isLoaded, isSignedIn } = useAuth()
   const { signOut } = useClerk()
   const router = useRouter()
+  const [signingOut, setSigningOut] = useState(false)
+  const signOutInFlightRef = useRef(false)
+  const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  /** Đăng xuất về /sign-in (full navigation) để tránh RSC POST / lỗi 500 khi redirect về trang chủ. */
+  /**
+   * Đăng xuất → /sign-in (tránh về `/` nếu RSC trang chủ lỗi 500).
+   * Fallback: sau ~1s vẫn chưa vào /sign-in thì ép full navigation.
+   */
   const handleSignOut = useCallback(async () => {
+    if (signOutInFlightRef.current) return
+    signOutInFlightRef.current = true
+    setSigningOut(true)
+    if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current)
+
+    fallbackTimerRef.current = setTimeout(() => {
+      if (!window.location.pathname.startsWith("/sign-in")) {
+        window.location.replace("/sign-in")
+      }
+      fallbackTimerRef.current = null
+    }, 1000)
+
     try {
       await signOut({ redirectUrl: "/sign-in" })
     } catch {
+      if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current)
       window.location.replace("/sign-in")
     }
   }, [signOut])
@@ -96,10 +115,11 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
             <Button
               type="button"
               variant="ghost"
-              className="hidden md:inline-flex cursor-pointer px-5 h-12 rounded-full text-base lg:text-lg font-medium"
+              disabled={signingOut}
+              className="hidden md:inline-flex cursor-pointer px-5 h-12 rounded-full text-base lg:text-lg font-medium disabled:opacity-60"
               onClick={() => void handleSignOut()}
             >
-              Đăng xuất
+              {signingOut ? "Đang đăng xuất…" : "Đăng xuất"}
             </Button>
           ) : null}
           <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="hidden md:block">
@@ -143,10 +163,11 @@ export function Header({ showDashboardButton = false }: HeaderProps) {
                   <Button
                     type="button"
                     variant="ghost"
-                    className="w-full mt-2 cursor-pointer rounded-full font-medium"
+                    disabled={signingOut}
+                    className="w-full mt-2 cursor-pointer rounded-full font-medium disabled:opacity-60"
                     onClick={() => void handleSignOut()}
                   >
-                    Đăng xuất
+                    {signingOut ? "Đang đăng xuất…" : "Đăng xuất"}
                   </Button>
                 ) : null}
                 <Link href="#pricing-section" onClick={(e) => handleScroll(e, "#pricing-section")} className="w-full mt-4">
