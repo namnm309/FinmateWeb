@@ -91,13 +91,15 @@ export function FinebankOverviewTopRow() {
         </CardHeader>
         <CardContent className="flex flex-1 flex-col pt-5">
           <div className="rounded-lg bg-[#299D91] p-4 text-white">
-            <div className="text-sm">Tổng các giao dịch thu nhập đã ghi nhận</div>
+            <div className="text-sm">Thu nhập từ ví + doanh thu Premium đã thanh toán</div>
             <div className="mt-3 text-xs opacity-90">
-              {isLoading ? 'Đang tải dữ liệu...' : 'Cập nhật theo dữ liệu giao dịch thực tế'}
+              {isLoading ? 'Đang tải dữ liệu...' : 'Cập nhật theo dữ liệu thực tế trên hệ thống'}
             </div>
           </div>
           <div className="mt-auto pt-4 text-xs text-[#878787]">
-            {error ? `Lỗi: ${error}` : 'Nguồn dữ liệu: bảng giao dịch (thu nhập)'}
+            {error
+              ? `Lỗi: ${error}`
+              : 'Nguồn: Transactions (thu nhập) + PremiumOrders (Paid)'}
           </div>
         </CardContent>
       </FinebankSurfaceCard>
